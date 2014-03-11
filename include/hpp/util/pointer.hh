@@ -35,4 +35,7 @@
   HPP_POINTER_DEFS(t);			\
   struct e_n_d__w_i_t_h__s_e_m_i_c_o_l_o_n
 
+# define HPP_STATIC_PTR_CAST(t, x) boost::static_pointer_cast < t > (x)
+# define HPP_DYNAMIC_PTR_CAST(t, x) boost::dynamic_pointer_cast < t > (x)
+
 #endif //! HPP_UTIL_POINTER_HH
