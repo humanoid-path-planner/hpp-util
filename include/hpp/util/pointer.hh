@@ -21,9 +21,7 @@
 *   - the type of a weak pointer to <tt>\a t const</tt> is \c CMyClassConstWkPtr
 */
 # define HPP_POINTER_DEFS(t)		 \
-  typedef boost::shared_ptr <t> t##ShPtr;		 \
   typedef boost::weak_ptr <t> t##WkPtr;		 \
-  typedef boost::shared_ptr <const t> t##ConstShPtr; \
   typedef boost::weak_ptr <const t> t##ConstWkPtr;	 \
   struct e_n_d__w_i_t_h__s_e_m_i_c_o_l_o_n
 
