@@ -37,5 +37,14 @@
 
 # define HPP_STATIC_PTR_CAST(t, x) boost::static_pointer_cast < t > (x)
 # define HPP_DYNAMIC_PTR_CAST(t, x) boost::dynamic_pointer_cast < t > (x)
-
+# ifndef NDEBUG
+#  define HPP_STATIC_CAST_REF_CHECK(t, x)\
+  try {\
+    dynamic_cast < t& > (x);\
+  } catch (const std::exception& exc) {\
+      assert ("Cast in #t failed" && 0);\
+  }
+# else
+#  define HPP_STATIC_CAST_REF_CHECK(t, x)
+# endif // defined NDEBUG
 #endif //! HPP_UTIL_POINTER_HH
