@@ -50,10 +50,15 @@ SET(${PROJECT_NAME}_HEADERS
   include/hpp/util/portability.hh
   include/hpp/util/timer.hh
   include/hpp/util/version.hh
+  include/hpp/util/parser.hh
+  include/hpp/util/factories/ignoretag.hh
+  include/hpp/util/factories/sequence.hh
 )
 
 # Add Boost path to include directories.
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+
+ADD_REQUIRED_DEPENDENCY("tinyxml >= 2.6")
 
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(tests)

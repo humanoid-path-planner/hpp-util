@@ -39,6 +39,8 @@ ADD_LIBRARY(hpp-util
   indent.cc
   timer.cc
   version.cc
+  parser.cc
+  factories/sequence.cc
 )
 
 # Set shared library version.
@@ -46,5 +48,7 @@ SET_TARGET_PROPERTIES(hpp-util PROPERTIES SOVERSION ${PROJECT_VERSION})
 
 # Link against Boost libraries.
 TARGET_LINK_LIBRARIES(hpp-util ${Boost_LIBRARIES})
+
+PKG_CONFIG_USE_DEPENDENCY(hpp-util tinyxml)
 
 INSTALL(TARGETS hpp-util DESTINATION ${CMAKE_INSTALL_LIBDIR})
