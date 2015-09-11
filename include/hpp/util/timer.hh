@@ -86,7 +86,8 @@ namespace hpp
         TimeCounter (const std::string& name);
 
         void start ();
-        void stop ();
+        time_duration stop ();
+        time_duration last ();
         void reset ();
 
         time_duration mean () const;
@@ -97,7 +98,7 @@ namespace hpp
       private:
         std::string n_;
         unsigned long c_;
-        time_duration t_;
+        time_duration t_, last_;
         ptime s_;
     };
 
@@ -112,6 +113,16 @@ namespace hpp
     _##name##_timecounter_.start ()
 #  define HPP_STOP_TIMECOUNTER(name)                                \
     _##name##_timecounter_.stop()
+#  define HPP_DISPLAY_LAST_TIMECOUNTER(name)                        \
+    do {                                                            \
+      using namespace hpp;                                          \
+      using namespace ::hpp::debug;                                 \
+      std::stringstream __ss;                                       \
+      __ss << #name << " last: "                                    \
+      << _##name##_timecounter_.last() <<  iendl;                   \
+      logging.benchmark.write (__FILE__, __LINE__, __PRETTY_FUNCTION__,\
+          __ss.str ());                                             \
+    } while (0)
 #  define HPP_DISPLAY_TIMECOUNTER(name)                             \
     do {                                                            \
       using namespace hpp;                                          \
@@ -120,8 +131,9 @@ namespace hpp
       __ss << _##name##_timecounter_ << iendl;                      \
       logging.benchmark.write (__FILE__, __LINE__, __PRETTY_FUNCTION__,\
           __ss.str ());                                             \
-      _##name##_timecounter_.reset();                               \
     } while (0)
+#  define HPP_RESET_TIMECOUNTER(name)                               \
+    _##name##_timecounter_.reset();
 #  define HPP_STREAM_TIMECOUNTER(os, name)                          \
     os << _##name##_timecounter_
 # else // HPP_ENABLE_BENCHMARK
@@ -129,7 +141,9 @@ namespace hpp
     struct _##name##_EndWithSemiColon_{}
 #  define HPP_START_TIMECOUNTER(name)
 #  define HPP_STOP_TIMECOUNTER(name)
+#  define HPP_DISPLAY_LAST_TIMECOUNTER(name)
 #  define HPP_DISPLAY_TIMECOUNTER(name)
+#  define HPP_RESET_TIMECOUNTER(name)
 #  define HPP_STREAM_TIMECOUNTER(os, name)                          \
     os
 # endif // HPP_ENABLE_BENCHMARK

@@ -102,10 +102,17 @@ namespace hpp
       s_ = boost::posix_time::microsec_clock::universal_time ();
     }
 
-    void TimeCounter::stop ()
+    TimeCounter::time_duration TimeCounter::stop ()
     {
-      t_ += boost::posix_time::microsec_clock::universal_time () - s_;
+      last_ = boost::posix_time::microsec_clock::universal_time () - s_;
+      t_ += last_;
       ++c_;
+      return last_;
+    }
+
+    TimeCounter::time_duration TimeCounter::last ()
+    {
+      return last_;
     }
 
     void TimeCounter::reset ()
