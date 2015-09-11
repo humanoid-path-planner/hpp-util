@@ -71,6 +71,63 @@ namespace hpp
 #  define hppDisplayBenchmark(ID)
 # endif // HPP_ENABLE_BENCHMARK
 
+    class HPP_UTIL_DLLAPI TimeCounter
+    {
+      public:
+        typedef boost::posix_time::ptime ptime;
+        typedef boost::posix_time::time_duration time_duration;
+
+        TimeCounter (const std::string& name);
+
+        void start ();
+        void stop ();
+        void reset ();
+
+        time_duration mean () const;
+        time_duration totalTime () const;
+
+        std::ostream& print (std::ostream& os) const;
+
+      private:
+        std::string n_;
+        unsigned long c_;
+        time_duration t_;
+        ptime s_;
+    };
+
+    std::ostream& operator<< (std::ostream& os, const TimeCounter& tc) {
+      return tc.print (os);
+    }
+
+# if HPP_ENABLE_BENCHMARK
+#  define HPP_DEFINE_TIMECOUNTER(name)                              \
+    ::hpp::debug::TimeCounter _##name##_timecounter_  (#name)
+#  define HPP_START_TIMECOUNTER(name)                               \
+    _##name##_timecounter_.start ()
+#  define HPP_STOP_TIMECOUNTER(name)                                \
+    _##name##_timecounter_.stop()
+#  define HPP_DISPLAY_TIMECOUNTER(name)                             \
+    do {                                                            \
+      using namespace hpp;                                          \
+      using namespace ::hpp::debug;                                 \
+      std::stringstream __ss;                                       \
+      __ss << _##name##_timecounter_ << iendl;                      \
+      logging.benchmark.write (__FILE__, __LINE__, __PRETTY_FUNCTION__,\
+          __ss.str ());                                             \
+      _##name##_timecounter_.reset();                               \
+    } while (0)
+#  define HPP_STREAM_TIMECOUNTER(os, name)                          \
+    os << _##name##_timecounter_
+# else // HPP_ENABLE_BENCHMARK
+#  define HPP_DEFINE_TIMECOUNTER(name)                              \
+    struct _##name##_EndWithSemiColon_{}
+#  define HPP_START_TIMECOUNTER(name)
+#  define HPP_STOP_TIMECOUNTER(name)
+#  define HPP_DISPLAY_TIMECOUNTER(name)
+#  define HPP_STREAM_TIMECOUNTER(os, name)                          \
+    os
+# endif // HPP_ENABLE_BENCHMARK
+
   } // end of namespace debug
 } // end of namespace hpp
 

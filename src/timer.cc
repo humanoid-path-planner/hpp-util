@@ -92,5 +92,42 @@ namespace hpp
 	 ("timer started at ``%1%'' and ended at ``%2%'' (elapsed time ``%3%''")
 	 % start_ % end_ % duration ());
     }
+
+    TimeCounter::TimeCounter (const std::string& name) :
+      n_ (name), c_ (0), t_ (0,0,0,0)
+    {}
+
+    void TimeCounter::start ()
+    {
+      s_ = boost::posix_time::microsec_clock::universal_time ();
+    }
+
+    void TimeCounter::stop ()
+    {
+      t_ += boost::posix_time::microsec_clock::universal_time () - s_;
+      ++c_;
+    }
+
+    void TimeCounter::reset ()
+    {
+      t_ = TimeCounter::time_duration (0,0,0,0);
+      c_ = 0;
+    }
+
+    TimeCounter::time_duration TimeCounter::mean () const
+    {
+      return ( c_ > 0 ) ? t_ / c_ : time_duration (0,0,0,0);
+    }
+
+    TimeCounter::time_duration TimeCounter::totalTime () const
+    {
+      return t_;
+    }
+
+    std::ostream& TimeCounter::print (std::ostream& os) const
+    {
+      return os << "Time Counter " << n_ << ": "
+        << c_ << ", " << totalTime () << ", " << mean ();
+    }
   } // end of namespace debug
 } // end of namespace hpp
