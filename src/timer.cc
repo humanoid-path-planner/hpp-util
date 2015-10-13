@@ -136,5 +136,10 @@ namespace hpp
       return os << "Time Counter " << n_ << ": "
         << c_ << ", " << totalTime () << ", " << mean ();
     }
+
+    std::ostream& operator<< (std::ostream& os, const TimeCounter& tc)
+    {
+      return tc.print (os);
+    }
   } // end of namespace debug
 } // end of namespace hpp

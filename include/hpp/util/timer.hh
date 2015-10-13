@@ -102,9 +102,7 @@ namespace hpp
         ptime s_;
     };
 
-    std::ostream& operator<< (std::ostream& os, const TimeCounter& tc) {
-      return tc.print (os);
-    }
+    std::ostream& operator<< (std::ostream& os, const TimeCounter& tc);
 
 # if HPP_ENABLE_BENCHMARK
 #  define HPP_DEFINE_TIMECOUNTER(name)                              \
