@@ -146,6 +146,10 @@ namespace hpp
     os
 # endif // HPP_ENABLE_BENCHMARK
 
+# define HPP_STOP_AND_DISPLAY_TIMECOUNTER(name)                     \
+   HPP_STOP_TIMECOUNTER(name);                                      \
+   HPP_DISPLAY_TIMECOUNTER(name)
+
   } // end of namespace debug
 } // end of namespace hpp
 
