@@ -151,6 +151,18 @@ namespace hpp
     }
 
 
+    void
+    Channel::write (char const* file,
+		    int line,
+		    char const* function,
+		    const std::stringstream& data)
+    {
+      BOOST_FOREACH (Output* o, subscribers_)
+	if (o)
+	  o->write (*this, file, line, function, data);
+    }
+
+
     ConsoleOutput::ConsoleOutput ()
     {}
 
@@ -166,6 +178,17 @@ namespace hpp
     {
       writePrefix (std::cerr, channel, file, line, function);
       std::cerr << incindent << data << decindent << std::flush;
+    }
+
+    void
+    ConsoleOutput::write (const Channel& channel,
+			  char const* file,
+			  int line,
+			  char const* function,
+			  const std::stringstream& data)
+    {
+      writePrefix (std::cerr, channel, file, line, function);
+      std::cerr << incindent << data.rdbuf() << decindent << std::flush;
     }
 
     namespace
@@ -227,6 +250,30 @@ namespace hpp
 
       writePrefix (stream, channel, file, line, function);
       stream << incindent << data << decindent << std::flush;
+    }
+
+    void
+    JournalOutput::write (const Channel& channel,
+			  char const* file,
+			  int line,
+			  char const* function,
+			  const std::stringstream& data)
+    {
+      if (lastFunction != function)
+	{
+	  if (!lastFunction.empty ())
+	    {
+	      writePrefix (stream, channel, file, line, function);
+	      stream << "exiting " << lastFunction << iendl;
+	    }
+
+	  writePrefix (stream, channel, file, line, function);
+	  stream << "entering " << function << iendl;
+	  lastFunction = function;
+	}
+
+      writePrefix (stream, channel, file, line, function);
+      stream << incindent << data.rdbuf() << decindent << std::flush;
     }
 
     Logging::Logging ()
