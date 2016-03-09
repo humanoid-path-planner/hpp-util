@@ -204,11 +204,7 @@ namespace hpp
     JournalOutput::JournalOutput (std::string filename)
       : filename (filename),
 	lastFunction (),
-#ifdef HPP_DEBUG
-      stream (makeLogFile (*this).c_str ())
-#else
       stream ()
-#endif
     {}
 
     JournalOutput::~JournalOutput ()
@@ -235,6 +231,8 @@ namespace hpp
 			  char const* function,
 			  const std::string& data)
     {
+      if (!stream.is_open ()) stream.open (makeLogFile (*this).c_str ());
+
       if (lastFunction != function)
 	{
 	  if (!lastFunction.empty ())
@@ -259,6 +257,7 @@ namespace hpp
 			  char const* function,
 			  const std::stringstream& data)
     {
+      if (!stream.is_open ()) stream.open (makeLogFile (*this).c_str ());
       if (lastFunction != function)
 	{
 	  if (!lastFunction.empty ())
