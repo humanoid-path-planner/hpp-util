@@ -1,8 +1,7 @@
 hpp-util
 ========
 
-[![Build Status](https://travis-ci.org/laas/hpp-util.png)](https://travis-ci.org/laas/hpp-util)
-[![Coverage Status](https://coveralls.io/repos/laas/hpp-util/badge.png?branch=master)](https://coveralls.io/r/laas/hpp-util?branch=master)
+[![Build Status](https://travis-ci.org/humanoid-path-planner/hpp-util.svg?branch=master)](https://travis-ci.org/humanoid-path-planner/hpp-util)
 
 This package gathers technical tools for the HPP project. Features include:
  - debugging
@@ -32,3 +31,4 @@ your machine.
    - CMake (>=2.6)
    - pkg-config
    - usual compilation tools (GCC/G++, make, etc.)
+ - libtinyxml-dev
