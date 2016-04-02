@@ -94,6 +94,13 @@ namespace hpp
 	       char const* function,
 	       const std::string& data) = 0;
 
+      virtual void
+	write (const Channel& channel,
+	       char const* file,
+	       int line,
+	       char const* function,
+	       const std::stringstream& data) = 0;
+
     protected:
       std::ostream&
 	writePrefix (std::ostream& stream,
@@ -127,6 +134,11 @@ namespace hpp
 		  char const* function,
 		  const std::string& data);
 
+      void write (char const* file,
+		  int line,
+		  char const* function,
+                  const std::stringstream& data);
+
       const char* label () const;
     private:
       const char* label_;
@@ -145,6 +157,12 @@ namespace hpp
 		  int line,
 		  char const* function,
 		  const std::string& data);
+
+      void write (const Channel& channel,
+		  char const* file,
+		  int line,
+		  char const* function,
+		  const std::stringstream& data);
 
       std::string getFilename () const;
 
@@ -165,6 +183,11 @@ namespace hpp
 		  int line,
 		  char const* function,
 		  const std::string& data);
+      void write (const Channel& channel,
+		  char const* file,
+		  int line,
+		  char const* function,
+		  const std::stringstream& data);
     };
 
     /// \brief Logging class owns all channels and outputs.
@@ -229,7 +252,7 @@ namespace hpp
     std::stringstream __ss;						\
     __ss << data << iendl;						\
     logging.channel.write (__FILE__, __LINE__, __PRETTY_FUNCTION__,     \
-			   __ss.str ());				\
+			   __ss);					\
   } while (0)
 
 #  define hppDoutFatal(channel, data)					\
@@ -239,7 +262,7 @@ namespace hpp
     std::stringstream __ss;						\
     __ss << data << iendl;						\
     logging.channel.write ( __FILE__, __LINE__,	__PRETTY_FUNCTION__,	\
-			    __ss.str ());				\
+			    __ss);					\
     ::std::exit(EXIT_FAILURE);						\
   } while (1)
 

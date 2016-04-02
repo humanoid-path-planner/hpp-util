@@ -23,6 +23,8 @@
 # include <iostream>
 # include <tinyxml.h>
 
+# include <boost/function.hpp>
+
 namespace hpp {
   namespace util {
     namespace parser {
@@ -220,7 +222,8 @@ namespace hpp {
       /// To extend its capabilities, see ObjectFactory.
       class Parser {
         public:
-          typedef ObjectFactory* (*FactoryType) (ObjectFactory*, const XMLElement*);
+          typedef boost::function <ObjectFactory* (ObjectFactory*, const XMLElement*)>
+                    FactoryType;
 
           /// Constructor
           /// \param defaultFactory The factory used when a tag is not known.

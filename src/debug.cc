@@ -151,6 +151,18 @@ namespace hpp
     }
 
 
+    void
+    Channel::write (char const* file,
+		    int line,
+		    char const* function,
+		    const std::stringstream& data)
+    {
+      BOOST_FOREACH (Output* o, subscribers_)
+	if (o)
+	  o->write (*this, file, line, function, data);
+    }
+
+
     ConsoleOutput::ConsoleOutput ()
     {}
 
@@ -168,6 +180,17 @@ namespace hpp
       std::cerr << incindent << data << decindent << std::flush;
     }
 
+    void
+    ConsoleOutput::write (const Channel& channel,
+			  char const* file,
+			  int line,
+			  char const* function,
+			  const std::stringstream& data)
+    {
+      writePrefix (std::cerr, channel, file, line, function);
+      std::cerr << incindent << data.rdbuf() << decindent << std::flush;
+    }
+
     namespace
     {
       HPP_UTIL_LOCAL std::string
@@ -181,11 +204,7 @@ namespace hpp
     JournalOutput::JournalOutput (std::string filename)
       : filename (filename),
 	lastFunction (),
-#ifdef HPP_DEBUG
-      stream (makeLogFile (*this).c_str ())
-#else
       stream ()
-#endif
     {}
 
     JournalOutput::~JournalOutput ()
@@ -212,6 +231,8 @@ namespace hpp
 			  char const* function,
 			  const std::string& data)
     {
+      if (!stream.is_open ()) stream.open (makeLogFile (*this).c_str ());
+
       if (lastFunction != function)
 	{
 	  if (!lastFunction.empty ())
@@ -227,6 +248,31 @@ namespace hpp
 
       writePrefix (stream, channel, file, line, function);
       stream << incindent << data << decindent << std::flush;
+    }
+
+    void
+    JournalOutput::write (const Channel& channel,
+			  char const* file,
+			  int line,
+			  char const* function,
+			  const std::stringstream& data)
+    {
+      if (!stream.is_open ()) stream.open (makeLogFile (*this).c_str ());
+      if (lastFunction != function)
+	{
+	  if (!lastFunction.empty ())
+	    {
+	      writePrefix (stream, channel, file, line, function);
+	      stream << "exiting " << lastFunction << iendl;
+	    }
+
+	  writePrefix (stream, channel, file, line, function);
+	  stream << "entering " << function << iendl;
+	  lastFunction = function;
+	}
+
+      writePrefix (stream, channel, file, line, function);
+      stream << incindent << data.rdbuf() << decindent << std::flush;
     }
 
     Logging::Logging ()

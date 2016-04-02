@@ -118,8 +118,8 @@ namespace hpp
       std::stringstream __ss;                                       \
       __ss << #name << " last: "                                    \
       << _##name##_timecounter_.last() <<  iendl;                   \
-      logging.benchmark.write (__FILE__, __LINE__, __PRETTY_FUNCTION__,\
-          __ss.str ());                                             \
+      logging.benchmark.write (__FILE__, __LINE__,                  \
+                               __PRETTY_FUNCTION__, __ss);          \
     } while (0)
 #  define HPP_DISPLAY_TIMECOUNTER(name)                             \
     do {                                                            \
@@ -127,8 +127,8 @@ namespace hpp
       using namespace ::hpp::debug;                                 \
       std::stringstream __ss;                                       \
       __ss << _##name##_timecounter_ << iendl;                      \
-      logging.benchmark.write (__FILE__, __LINE__, __PRETTY_FUNCTION__,\
-          __ss.str ());                                             \
+      logging.benchmark.write (__FILE__, __LINE__,                  \
+                               __PRETTY_FUNCTION__, __ss);          \
     } while (0)
 #  define HPP_RESET_TIMECOUNTER(name)                               \
     _##name##_timecounter_.reset();
@@ -145,6 +145,10 @@ namespace hpp
 #  define HPP_STREAM_TIMECOUNTER(os, name)                          \
     os
 # endif // HPP_ENABLE_BENCHMARK
+
+# define HPP_STOP_AND_DISPLAY_TIMECOUNTER(name)                     \
+   HPP_STOP_TIMECOUNTER(name);                                      \
+   HPP_DISPLAY_TIMECOUNTER(name)
 
   } // end of namespace debug
 } // end of namespace hpp
