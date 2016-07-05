@@ -94,7 +94,8 @@ namespace hpp
     }
 
     TimeCounter::TimeCounter (const std::string& name) :
-      n_ (name), c_ (0), t_ (0,0,0,0)
+      n_ (name), c_ (0), t_ (0,0,0,0),
+      min_ (boost::date_time::pos_infin), max_ (0,0,0,0)
     {}
 
     void TimeCounter::start ()
@@ -105,6 +106,8 @@ namespace hpp
     TimeCounter::time_duration TimeCounter::stop ()
     {
       last_ = boost::posix_time::microsec_clock::universal_time () - s_;
+      min_ = std::min(last_, min_);
+      max_ = std::max(last_, max_);
       t_ += last_;
       ++c_;
       return last_;
@@ -117,8 +120,20 @@ namespace hpp
 
     void TimeCounter::reset ()
     {
-      t_ = TimeCounter::time_duration (0,0,0,0);
+      t_ = time_duration (0,0,0,0);
       c_ = 0;
+      min_ = time_duration(boost::date_time::pos_infin);
+      max_ = time_duration(0,0,0,0);
+    }
+
+    TimeCounter::time_duration TimeCounter::min () const
+    {
+      return min_;
+    }
+
+    TimeCounter::time_duration TimeCounter::max () const
+    {
+      return max_;
     }
 
     TimeCounter::time_duration TimeCounter::mean () const
@@ -133,8 +148,13 @@ namespace hpp
 
     std::ostream& TimeCounter::print (std::ostream& os) const
     {
-      return os << "Time Counter " << n_ << ": "
-        << c_ << ", " << totalTime () << ", " << mean ();
+      return os << "Time Counter " << n_
+        << ": " << c_
+        << ", " << totalTime ()
+        << ", [ " << min ()
+        <<   ", " << mean ()
+        <<   ", " << max () << "]"
+        ;
     }
 
     std::ostream& operator<< (std::ostream& os, const TimeCounter& tc)

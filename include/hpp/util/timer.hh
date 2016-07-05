@@ -90,6 +90,8 @@ namespace hpp
         time_duration last ();
         void reset ();
 
+        time_duration min () const;
+        time_duration max () const;
         time_duration mean () const;
         time_duration totalTime () const;
 
@@ -98,7 +100,7 @@ namespace hpp
       private:
         std::string n_;
         unsigned long c_;
-        time_duration t_, last_;
+        time_duration t_, last_, min_, max_;
         ptime s_;
     };
 
