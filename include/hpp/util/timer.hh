@@ -71,10 +71,21 @@ namespace hpp
 #  define hppDisplayBenchmark(ID)					\
     hppDout (benchmark, #ID << ": "<< _##ID##_timer_.duration ());
 
+#  define hppBenchmark(data)                                           \
+  do {									\
+    using namespace hpp;						\
+    using namespace ::hpp::debug;					\
+    std::stringstream __ss;						\
+    __ss << data << iendl;						\
+    logging.benchmark.write (__FILE__, __LINE__, __PRETTY_FUNCTION__,   \
+			   __ss);					\
+  } while (0)
+
 # else
 #  define hppStartBenchmark(ID)
 #  define hppStopBenchmark(ID)
 #  define hppDisplayBenchmark(ID)
+#  define hppBenchmark(data)
 # endif // HPP_ENABLE_BENCHMARK
 
     class HPP_UTIL_DLLAPI TimeCounter
