@@ -8,6 +8,8 @@
 //
 // See the COPYING file for more information.
 
+/// \file
+
 #ifndef HPP_UTIL_EXCEPTION_HH
 # define HPP_UTIL_EXCEPTION_HH
 # include <iosfwd>

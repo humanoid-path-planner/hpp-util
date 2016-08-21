@@ -33,4 +33,19 @@
    Bug reporting can be done through the
    <a href="http://github.com/laas/hpp-util/issues">github ticketing
    system</a>.
+
+   \defgroup macro_exception Preprocessor macros for std exceptions
+
+   It eases throwing exceptions built from string stream. You can use equivalently
+   \code
+     HPP_THROW(std::runtime_error, "message" << variable);
+   \endcode
+   or
+   \code
+     HPP_THROW_WITH_LINEINFO(std::runtime_error, "message" << variable);
+   \endcode
+   or
+   \code
+     throw ::hpp::ExceptionFactory<std::runtime_error>() << "message" << variable << ::hpp::ThrowException();
+   \endcode
 */

@@ -18,8 +18,7 @@
 
 namespace hpp
 {
-  /// \brief Class to ease exception creation.
-
+  /// \cond
   struct ThrowException {};
 
   template <typename exception> struct ExceptionFactory;
@@ -32,7 +31,18 @@ namespace hpp
         static inline type run(ExceptionFactory<exception>& be, const In& t) { be.ss << t; return be; }
       };
   }
+  /// \endcond
 
+  /// \brief Class to ease exception creation.
+  ///
+  /// You can use equivalently
+  /// \code
+  ///   throw ::hpp::ExceptionFactory<std::runtime_error>() << "message" << variable << ::hpp::ThrowException();
+  /// \endcode
+  /// or
+  /// \code
+  ///   HPP_THROW(std::runtime_error>, "message" << variable);
+  /// \endcode
   template <typename exception>
     struct HPP_UTIL_DLLAPI ExceptionFactory
     {
@@ -45,6 +55,7 @@ namespace hpp
       }
     };
 
+  /// \cond
   // ----------------------------------------
   // ExceptionFactory - template specialization
   // ----------------------------------------
@@ -56,14 +67,26 @@ namespace hpp
         static inline type run(ExceptionFactory<exception>& be, const ThrowException&) { return exception(be.ss.str()); }
       };
   }
+  /// \endcond
 } // end of namespace hpp.
 
-/// \brief Throw a HPP exception.
+/// \addtogroup macro_exception
+/// \{
+
+/// \brief Throw an exception of type using MSG as a string stream
+/// \code
+///   HPP_THROW(std::runtime_error>, "message" << variable);
+/// \endcode
 # define HPP_THROW(TYPE, MSG)			\
   throw ::hpp::ExceptionFactory<TYPE>() << MSG << ::hpp::ThrowException()
 
-/// \brief Throw a HPP exception.
+/// \brief Throw an exception of type using MSG as a string stream
+/// \code
+///   HPP_THROW_WITH_LINEINFO(std::runtime_error>, "message" << variable);
+/// \endcode
 # define HPP_THROW_WITH_LINEINFO(TYPE, MSG)			\
   HPP_THROW(TYPE,MSG << " at " << __FILE__ << ":" << __LINE__)
+
+/// \}
 
 #endif //! HPP_UTIL_EXCEPTION_FACTORY_HH
