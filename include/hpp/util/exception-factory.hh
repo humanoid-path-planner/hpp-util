@@ -64,7 +64,7 @@ namespace hpp
       struct conditional_insertion_operator<exception, ThrowException> {
         typedef exception type;
 
-        static inline type run(ExceptionFactory<exception>& be, const ThrowException&) { return exception(be.ss.str()); }
+        static inline type run(ExceptionFactory<exception>& be, const ThrowException&) { return exception(be.ss.str().c_str()); }
       };
   }
   /// \endcond
