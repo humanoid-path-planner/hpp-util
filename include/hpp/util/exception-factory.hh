@@ -75,7 +75,7 @@ namespace hpp
 
 /// \brief Throw an exception of type using MSG as a string stream
 /// \code
-///   HPP_THROW(std::runtime_error>, "message" << variable);
+///   HPP_THROW(std::runtime_error, "message" << variable);
 /// \endcode
 # define HPP_THROW(TYPE, MSG)			\
   throw ::hpp::ExceptionFactory<TYPE>() << MSG << ::hpp::ThrowException()
