@@ -91,6 +91,13 @@ namespace hpp
     class HPP_UTIL_DLLAPI TimeCounter
     {
       public:
+        struct Scope {
+          Scope (TimeCounter& t) : tc(t) { t.start(); }
+          ~Scope () { tc.stop(); }
+
+          TimeCounter& tc;
+        };
+
         typedef boost::posix_time::ptime ptime;
         typedef boost::posix_time::time_duration time_duration;
 
@@ -120,6 +127,9 @@ namespace hpp
 # if HPP_ENABLE_BENCHMARK
 #  define HPP_DEFINE_TIMECOUNTER(name)                              \
     ::hpp::debug::TimeCounter _##name##_timecounter_  (#name)
+#  define HPP_SCOPE_TIMECOUNTER(name)                               \
+    ::hpp::debug::TimeCounter::Scope _##name##_scopetimecounter_    \
+    (_##name##_timecounter_)
 #  define HPP_START_TIMECOUNTER(name)                               \
     _##name##_timecounter_.start ()
 #  define HPP_STOP_TIMECOUNTER(name)                                \
@@ -150,6 +160,7 @@ namespace hpp
 # else // HPP_ENABLE_BENCHMARK
 #  define HPP_DEFINE_TIMECOUNTER(name)                              \
     struct _##name##_EndWithSemiColon_{}
+#  define HPP_SCOPE_TIMECOUNTER(name)
 #  define HPP_START_TIMECOUNTER(name)
 #  define HPP_STOP_TIMECOUNTER(name)
 #  define HPP_DISPLAY_LAST_TIMECOUNTER(name)

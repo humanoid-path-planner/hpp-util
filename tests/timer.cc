@@ -36,11 +36,13 @@ void f(const int extra)
 }
 
 HPP_DEFINE_TIMECOUNTER(testCounter);
+HPP_DEFINE_TIMECOUNTER(testCounter2);
 
 int run_test ()
 {
+  int N = 10;
   logging.benchmark = Channel ("BENCHMARK", boost::assign::list_of<Output*> (&logging.console));
-  for (int i = 0; i < 10; ++i) {
+  for (int i = 0; i < N; ++i) {
     HPP_START_TIMECOUNTER(testCounter);
     int k = 1 + (std::rand()%10);
     // std::cout << k << std::endl;
@@ -49,6 +51,14 @@ int run_test ()
     HPP_DISPLAY_LAST_TIMECOUNTER(testCounter);
   }
   HPP_DISPLAY_TIMECOUNTER(testCounter);
+  for (int i = 0; i < N; ++i) {
+    HPP_SCOPE_TIMECOUNTER(testCounter2);
+    int k = 1 + (std::rand()%10);
+    // std::cout << k << std::endl;
+    f(k);
+    HPP_DISPLAY_LAST_TIMECOUNTER(testCounter2);
+  }
+  HPP_DISPLAY_TIMECOUNTER(testCounter2);
   return 0;
 }
 
