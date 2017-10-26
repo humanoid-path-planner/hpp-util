@@ -1,0 +1,2 @@
+FROM eur0c.laas.fr:4567/gsaurel/buildfarm/ubuntudc:12.04
+RUN apt-get update -qqy && apt-get install -qqy doxygen doxygen-latex libboost-all-dev libtinyxml-dev cmake git g++ pkg-config make

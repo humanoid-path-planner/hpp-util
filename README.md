@@ -1,7 +1,9 @@
 hpp-util
 ========
 
-[![Build Status](https://travis-ci.org/humanoid-path-planner/hpp-util.svg?branch=master)](https://travis-ci.org/humanoid-path-planner/hpp-util)
+[![Building Status](https://travis-ci.org/humanoid-path-planner/hpp-util.svg?branch=master)](https://travis-ci.org/humanoid-path-planner/hpp-util)
+[![Pipeline status](https://gepgitlab.laas.fr/humanoid-path-planner/hpp-util/badges/master/pipeline.svg)](https://gepgitlab.laas.fr/humanoid-path-planner/hpp-util/commits/master)
+[![Coverage report](https://gepgitlab.laas.fr/humanoid-path-planner/hpp-util/badges/master/coverage.svg?job=doc-coverage)](http://projects.laas.fr/gepetto/doc/humanoid-path-planner/hpp-util/master/coverage/)
 
 This package gathers technical tools for the HPP project. Features include:
  - debugging
