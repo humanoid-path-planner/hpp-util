@@ -1,5 +1,9 @@
                                                                 -*- outline -*-
 
+New in 3.3, 2018-05-17
+* Change License from GPL to LGPL.
+* Enable users to define scopes for benchmarking.
+
 New in 0.8, 2013-10-08:
 * Define additionnal Kitelab replacement macros.
 
