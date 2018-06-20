@@ -38,8 +38,10 @@ namespace hpp
 
   std::ostream& decindent (std::ostream& o)
   {
-    assert (indent (o));
-    indent (o) -= 2;
+    long& ind = indent(o);
+    if (ind >= 2)
+      indent (o) -= 2;
+    else ind = 0;
     return o;
   }
 
