@@ -46,32 +46,4 @@ namespace hpp
 /// \brief Define macro for precondition checking.
 # define HPP_PRECONDITION(CONDITION) HPP_ASSERT (CONDITION)
 
-/// \brief Define macro for postcondition checking.
-///
-/// This macro allows an assertion to be done whenever a
-/// scope is exited.
-///
-/// This macro takes two arguments: the condition which should
-/// be evaluated and a list of captured variables.
-/// All variables used in the condition must be in this list.
-///
-/// They can either be copied or taken by reference:
-/// HPP_POSTCONDITION (a == 3, (a))
-/// ...checks that a is equal to three and copy the variable a
-/// when HPP_POSTCONDITION is called.
-///
-/// HPP_POSTCONDITION (a == 3, (&a))
-/// ...takes a by reference and evaluated its final value (when
-/// the scope is exited).
-///
-/// See Boost.ScopeExit for more details.
-# define HPP_POSTCONDITION(CONDITION, CAPTURED_VARIABLES)	\
-  BOOST_SCOPE_EXIT(CAPTURED_VARIABLES)				\
-  {								\
-    HPP_ASSERT (CONDITION);					\
-  } BOOST_SCOPE_EXIT_END					\
-  struct _e_n_d__w_i_t_h__s_e_m_i_c_o_l_o_n
-
-
-
 #endif //! HPP_UTIL_ASSERTION_HH

@@ -39,14 +39,15 @@ int my_plus_function (int a, int b)
   HPP_PRECONDITION (a >= 0);
   HPP_PRECONDITION (b >= 0);
 
-  int res = 0;
-
-  // This algorithm should compute a + b.
-  HPP_POSTCONDITION (res == a + b, (&res) (a) (b));
+  int res = 0, expected = a + b;
 
   res = b;
   while (a > 0)
     --a, ++res;
+
+  // This algorithm should have computed a + b.
+  HPP_ASSERT (res == expected);
+
   return res;
 }
 
@@ -56,12 +57,13 @@ int my_broken_plus_function (int a, int b)
   HPP_PRECONDITION (a >= 0);
   HPP_PRECONDITION (b >= 0);
 
-  int res = 0;
-
-  // This algorithm should compute a + b.
-  HPP_POSTCONDITION (res == a + b, (&res) (a) (b));
+  int res = 0, expected = a + b;
 
   res = b; // This is wrong.
+
+  // This algorithm should have computed a + b.
+  HPP_ASSERT (res == expected);
+
   return res;
 }
 
