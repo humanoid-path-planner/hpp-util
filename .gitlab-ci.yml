@@ -31,7 +31,6 @@ robotpkg-hpp-util-16.04-release:
 robotpkg-hpp-util-18.04-release:
   <<: *robotpkg-hpp-util
   image: eur0c.laas.fr:5000/humanoid-path-planner/hpp-util/hpp-util:18.04
-  allow_failure: true
 
 doc-coverage:
   <<: *robotpkg-hpp-util
@@ -51,4 +50,3 @@ doc-coverage:
     paths:
       - doxygen-html/
       - coverage/
-
