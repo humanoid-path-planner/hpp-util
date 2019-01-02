@@ -18,20 +18,15 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 INCLUDE(cmake/base.cmake)
 INCLUDE(cmake/boost.cmake)
+INCLUDE(cmake/hpp.cmake)
 
 SET(PROJECT_NAME hpp-util)
 SET(PROJECT_DESCRIPTION "Debugging tools for the HPP project.")
-SET(PROJECT_URL "http://github.com/laas/hpp-util")
+SET(PROJECT_URL "http://github.com/humanoid-path-planner/hpp-util")
 
 SET(CXX_DISABLE_WERROR 1)
 
-SETUP_PROJECT()
-
-# Activate logging machinery if requested
-SET (HPP_DEBUG FALSE CACHE BOOL "trigger hpp-util debug output")
-IF (HPP_DEBUG)
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHPP_DEBUG")
-ENDIF()
+SETUP_HPP_PROJECT()
 
 # Search for Boost.
 SET(BOOST_COMPONENTS filesystem system)
@@ -65,4 +60,4 @@ ADD_SUBDIRECTORY(tests)
 PKG_CONFIG_APPEND_LIBS("hpp-util")
 PKG_CONFIG_APPEND_BOOST_LIBS(${BOOST_COMPONENTS})
 
-SETUP_PROJECT_FINALIZE()
+SETUP_HPP_PROJECT_FINALIZE()
