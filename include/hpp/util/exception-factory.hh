@@ -70,7 +70,7 @@ namespace hpp
   /// \endcond
 } // end of namespace hpp.
 
-/// \addtogroup macro_exception
+/// \addtogroup hpp_util_exceptions
 /// \{
 
 /// \brief Throw an exception of type using MSG as a string stream

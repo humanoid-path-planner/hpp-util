@@ -138,7 +138,7 @@ namespace hpp
 
     TimeCounter::time_duration TimeCounter::mean () const
     {
-      return ( c_ > 0 ) ? t_ / c_ : time_duration (0,0,0,0);
+      return ( c_ > 0 ) ? t_ / (int)c_ : time_duration (0,0,0,0);
     }
 
     TimeCounter::time_duration TimeCounter::totalTime () const

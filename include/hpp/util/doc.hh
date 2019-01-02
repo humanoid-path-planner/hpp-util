@@ -34,7 +34,11 @@
    <a href="http://github.com/laas/hpp-util/issues">github ticketing
    system</a>.
 
-   \defgroup macro_exception Preprocessor macros for std exceptions
+   \defgroup hpp_util_debugging Macros for debugging
+
+   \defgroup hpp_util_logging Macros for logging
+
+   \defgroup hpp_util_exceptions Macros for \c std::exception
 
    It eases throwing exceptions built from string stream. You can use equivalently
    \code

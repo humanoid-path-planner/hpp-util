@@ -235,16 +235,28 @@ namespace hpp
 
 # ifdef HPP_DEBUG
 
+/// \addtogroup hpp_util_debugging
+/// \{
+
+/// \brief Enable \c statement when HPP_DEBUG is defined.
 #  define hppDebug(statement)			\
   do {						\
     using namespace ::hpp::debug;		\
     { statement; }				\
   } while(0)
 
+/// \brief Enable \c statement when HPP_DEBUG is defined.
 #  define hppDebugStatement(statement)		\
   statement
 
+/// \}
 
+/// \addtogroup hpp_util_logging Macros for logging
+/// \{
+
+/// \brief Write \c data to \c channel when HPP_DEBUG is defined.
+/// \param channel one of \em error, \em warning, \em notice, \em info or \em benchmark.
+/// \param data a statement that can be \c << to a \c std::stringstream.
 #  define hppDout(channel, data)					\
   do {									\
     using namespace hpp;						\
@@ -255,6 +267,9 @@ namespace hpp
 			   __ss);					\
   } while (0)
 
+/// \brief Write \c data to \c channel and exit the program.
+/// \param channel one of \em error, \em warning, \em notice, \em info or \em benchmark.
+/// \param data a statement that can be \c << to a \c std::stringstream.
 #  define hppDoutFatal(channel, data)					\
   do {									\
     using namespace hpp;						\
@@ -265,6 +280,8 @@ namespace hpp
 			    __ss);					\
     ::std::exit(EXIT_FAILURE);						\
   } while (1)
+
+/// \}
 
 # else
 

@@ -88,6 +88,7 @@ namespace hpp
 #  define hppBenchmark(data)
 # endif // HPP_ENABLE_BENCHMARK
 
+    /// \brief Computation of min, max and mean time from a set of measurements.
     class HPP_UTIL_DLLAPI TimeCounter
     {
       public:
@@ -124,16 +125,25 @@ namespace hpp
 
     std::ostream& operator<< (std::ostream& os, const TimeCounter& tc);
 
-# if HPP_ENABLE_BENCHMARK
+# ifdef HPP_ENABLE_BENCHMARK
+
+/// \addtogroup hpp_util_logging
+/// \{
+
+/// \brief Define a new TimeCounter
 #  define HPP_DEFINE_TIMECOUNTER(name)                              \
     ::hpp::debug::TimeCounter _##name##_timecounter_  (#name)
+/// \brief Compute the time spent in the current scope.
 #  define HPP_SCOPE_TIMECOUNTER(name)                               \
     ::hpp::debug::TimeCounter::Scope _##name##_scopetimecounter_    \
     (_##name##_timecounter_)
+/// \brief Start a watch.
 #  define HPP_START_TIMECOUNTER(name)                               \
     _##name##_timecounter_.start ()
+/// \brief Stop a watch and save elapsed time.
 #  define HPP_STOP_TIMECOUNTER(name)                                \
     _##name##_timecounter_.stop()
+/// \brief Print last elapsed time to the logs.
 #  define HPP_DISPLAY_LAST_TIMECOUNTER(name)                        \
     do {                                                            \
       using namespace hpp;                                          \
@@ -144,6 +154,7 @@ namespace hpp
       logging.benchmark.write (__FILE__, __LINE__,                  \
                                __PRETTY_FUNCTION__, __ss);          \
     } while (0)
+/// \brief Print min, max and mean time of the time measurements.
 #  define HPP_DISPLAY_TIMECOUNTER(name)                             \
     do {                                                            \
       using namespace hpp;                                          \
@@ -153,10 +164,13 @@ namespace hpp
       logging.benchmark.write (__FILE__, __LINE__,                  \
                                __PRETTY_FUNCTION__, __ss);          \
     } while (0)
+/// \brief Reset a TimeCounter.
 #  define HPP_RESET_TIMECOUNTER(name)                               \
     _##name##_timecounter_.reset();
+/// \brief Stream (\c operator<<) to the output stream.
 #  define HPP_STREAM_TIMECOUNTER(os, name)                          \
     os << _##name##_timecounter_
+/// \}
 # else // HPP_ENABLE_BENCHMARK
 #  define HPP_DEFINE_TIMECOUNTER(name)                              \
     struct _##name##_EndWithSemiColon_{}
