@@ -189,6 +189,7 @@ namespace hpp
     {
       writePrefix (std::cerr, channel, file, line, function);
       std::cerr << incindent << data.rdbuf() << decindent << std::flush;
+      data.rdbuf()->pubseekpos(0);
     }
 
     namespace
@@ -273,6 +274,7 @@ namespace hpp
 
       writePrefix (stream, channel, file, line, function);
       stream << incindent << data.rdbuf() << decindent << std::flush;
+      data.rdbuf()->pubseekpos(0);
     }
 
     Logging::Logging ()

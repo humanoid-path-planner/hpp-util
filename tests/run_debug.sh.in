@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export HPP_LOGGINGDIR=@HPP_LOGGINGDIR@
+@CMAKE_BINARY_DIR@/tests/debug
