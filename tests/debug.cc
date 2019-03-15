@@ -26,12 +26,13 @@ using namespace hpp::debug;
 
 int run_test ()
 {
+  ConsoleOutput console;
   JournalOutput out ("debug.test.log");
-  Channel channel ("TEST", boost::assign::list_of<Output*> (&out));
-  for (int i = 0; i < 100000; ++i) {
+  Channel channel ("TEST", boost::assign::list_of<Output*> (&out)(&console));
+  for (int i = 0; i < 100; ++i) {
     std::stringstream ss;
     ss << i << hpp::iendl;
-    out.write (channel, __FILE__, __LINE__, __PRETTY_FUNCTION__, ss.str());
+    channel.write (__FILE__, __LINE__, __PRETTY_FUNCTION__, ss);
   }
   return 0;
 }
