@@ -14,19 +14,19 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Requires at least CMake 2.6 to configure the package.
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
-
-INCLUDE(cmake/base.cmake)
-INCLUDE(cmake/boost.cmake)
-INCLUDE(cmake/hpp.cmake)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 SET(PROJECT_NAME hpp-util)
 SET(PROJECT_DESCRIPTION "Debugging tools for the HPP project.")
 SET(PROJECT_URL "http://github.com/humanoid-path-planner/hpp-util")
 
+INCLUDE(cmake/hpp.cmake)
+INCLUDE(cmake/boost.cmake)
+
 SET(CXX_DISABLE_WERROR 1)
 
-SETUP_HPP_PROJECT()
+COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
+PROJECT(${PROJECT_NAME} ${PROJECT_ARGS})
 
 # Search for Boost.
 SET(BOOST_COMPONENTS filesystem system)
@@ -59,5 +59,3 @@ ADD_SUBDIRECTORY(tests)
 
 PKG_CONFIG_APPEND_LIBS("hpp-util")
 PKG_CONFIG_APPEND_BOOST_LIBS(${BOOST_COMPONENTS})
-
-SETUP_HPP_PROJECT_FINALIZE()
