@@ -33,7 +33,7 @@ namespace hpp
 # ifdef HPP_ENABLE_ASSERTIONS
 #  define HPP_ASSERT(CONDITION)					\
   do {								\
-    bool _x = (CONDITION);					\
+    bool _x = static_cast<bool>(CONDITION);					\
     if (!_x)							\
       HPP_THROW_EXCEPTION					\
 	(::hpp::AssertionError,					\
