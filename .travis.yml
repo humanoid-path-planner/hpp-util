@@ -1,9 +1,7 @@
 language: cpp
-sudo: required
-dist: trusty
-notifications:
-  email:
-  - jmirabel@laas.fr
+dist: bionic
+os: linux
+cache: ccache
 branches:
   only:
   - master
@@ -12,6 +10,12 @@ compiler:
 - gcc
 before_install:
 - git submodule update --init --recursive
-- sudo apt-get update -qq
-- sudo apt-get install -qq doxygen doxygen-latex libboost-all-dev libtinyxml-dev
+addons:
+  apt:
+    update: true
+    packages:
+      - doxygen
+      - doxygen-latex
+      - libboost-all-dev
+      - libtinyxml-dev
 script: ./.travis/build
