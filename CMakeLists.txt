@@ -1,4 +1,4 @@
-# Copyright (C) 2010 Florent Lamiraux, Thomas Moulard, JRL, CNRS/AIST.
+# Copyright (C) 2010, 2020 Florent Lamiraux, Thomas Moulard, Guilhem Saurel, JRL, CNRS/AIST, LAAS-CNRS
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,8 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Requires at least CMake 2.6 to configure the package.
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 
 SET(PROJECT_NAME hpp-util)
 SET(PROJECT_DESCRIPTION "Debugging tools for the HPP project.")
@@ -24,14 +23,17 @@ INCLUDE(cmake/hpp.cmake)
 INCLUDE(cmake/boost.cmake)
 
 SET(CXX_DISABLE_WERROR 1)
+SET(PROJECT_USE_CMAKE_EXPORT TRUE)
 
-COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
+COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX C)
 PROJECT(${PROJECT_NAME} ${PROJECT_ARGS})
 
 # Search for Boost.
 SET(BOOST_COMPONENTS filesystem system)
 SEARCH_FOR_BOOST()
 
+SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/find-external/TinyXML)
+FIND_PACKAGE(TinyXML REQUIRED)
 
 SET(${PROJECT_NAME}_HEADERS
   include/hpp/util/assertion.hh
@@ -47,16 +49,39 @@ SET(${PROJECT_NAME}_HEADERS
   include/hpp/util/parser.hh
   include/hpp/util/factories/ignoretag.hh
   include/hpp/util/factories/sequence.hh
-)
+  )
 
-# Add Boost path to include directories.
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+SET(${PROJECT_NAME}_SOURCES
+  src/debug.cc
+  src/exception.cc
+  src/indent.cc
+  src/timer.cc
+  src/version.cc
+  src/parser.cc
+  src/factories/sequence.cc
+  )
 
-SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/find-external/TinyXML)
-FIND_PACKAGE(TinyXML REQUIRED)
+ADD_LIBRARY(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES} ${${PROJECT_NAME}_HEADERS})
+TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PRIVATE ${TinyXML_INCLUDE_DIR} ${Boost_INCLUDE_DIRS})
+TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC $<INSTALL_INTERFACE:include>)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${TinyXML_LIBRARY} ${Boost_LIBRARIES})
 
-ADD_SUBDIRECTORY(src)
+# Check for unistd.h presence.
+INCLUDE(CheckIncludeFiles)
+CHECK_INCLUDE_FILES(unistd.h HAVE_UNISTD_H)
+IF(${HAVE_UNISTD_H})
+  TARGET_COMPILE_DEFINITIONS(${PROJECT_NAME} PRIVATE -DHAVE_UNISTD_H)
+ENDIF(${HAVE_UNISTD_H})
+
+# Define logging directory location.
+TARGET_COMPILE_DEFINITIONS(${PROJECT_NAME} PRIVATE -DHPP_LOGGINGDIR="${CMAKE_INSTALL_PREFIX}/var/log")
+
+# Set shared library version.
+SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES SOVERSION ${PROJECT_VERSION})
+
+INSTALL(TARGETS ${PROJECT_NAME} EXPORT ${TARGETS_EXPORT_NAME} DESTINATION lib)
+
 ADD_SUBDIRECTORY(tests)
 
-PKG_CONFIG_APPEND_LIBS("hpp-util")
+PKG_CONFIG_APPEND_LIBS(${PROJECT_NAME})
 PKG_CONFIG_APPEND_BOOST_LIBS(${BOOST_COMPONENTS})
