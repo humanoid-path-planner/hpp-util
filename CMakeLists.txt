@@ -29,7 +29,7 @@ COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX C)
 PROJECT(${PROJECT_NAME} ${PROJECT_ARGS})
 
 # Search for Boost.
-SET(BOOST_COMPONENTS filesystem system)
+SET(BOOST_COMPONENTS filesystem system serialization)
 SEARCH_FOR_BOOST()
 
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/find-external/TinyXML)
@@ -49,6 +49,8 @@ SET(${PROJECT_NAME}_HEADERS
   include/hpp/util/parser.hh
   include/hpp/util/factories/ignoretag.hh
   include/hpp/util/factories/sequence.hh
+  include/hpp/util/serialization.hh
+  include/hpp/util/serialization-fwd.hh
   )
 
 SET(${PROJECT_NAME}_SOURCES
