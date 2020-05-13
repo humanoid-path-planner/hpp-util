@@ -23,26 +23,31 @@
 #include <boost/archive/polymorphic_xml_iarchive.hpp>
 #include <boost/archive/polymorphic_xml_oarchive.hpp>
 
-int run_test ()
+template<typename T>
+int run_test_tpl ()
 {
   std::stringstream ss;
-  Foo foo(10);
-  Bar bar(20);
+  T t(10);
   {
     boost::archive::polymorphic_xml_oarchive oa(ss);
-    oa << boost::serialization::make_nvp("foo", foo);
-    oa << boost::serialization::make_nvp("bar", bar);
+    oa << boost::serialization::make_nvp("t", t);
   }
-  Foo* foo_r = NULL;
-  Bar* bar_r = NULL;
+  Foo* t_r = NULL;
   {
     boost::archive::polymorphic_xml_iarchive ia(ss);
-    ia >> boost::serialization::make_nvp("foo", foo_r);
-    ia >> boost::serialization::make_nvp("bar", bar_r);
+    ia >> boost::serialization::make_nvp("t", t_r);
   }
 
-  if (foo_r == NULL || foo_r->i_ != foo.i_) return TEST_FAILED;
-  if (bar_r == NULL || bar_r->i_ != bar.i_) return TEST_FAILED;
+  if (t_r == NULL || t_r->i_ != t.i_) return TEST_FAILED;
+  return TEST_SUCCEED;
+}
+
+int run_test ()
+{
+  if (run_test_tpl<Foo    >() == TEST_FAILED) return TEST_FAILED;
+  if (run_test_tpl<Bar    >() == TEST_FAILED) return TEST_FAILED;
+  if (run_test_tpl<FooFree>() == TEST_FAILED) return TEST_FAILED;
+  if (run_test_tpl<BarFree>() == TEST_FAILED) return TEST_FAILED;
   return TEST_SUCCEED;
 }
 

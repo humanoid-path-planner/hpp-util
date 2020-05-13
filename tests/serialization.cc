@@ -46,3 +46,34 @@ void Bar::save(Archive & ar, const unsigned int version) const
 }
 
 HPP_SERIALIZATION_SPLIT_IMPLEMENT(Bar);
+
+namespace boost {
+namespace serialization {
+
+template<class Archive>
+void serialize(Archive & ar, FooFree& foo, const unsigned int version)
+{
+  (void) version;
+  ar & hpp::serialization::make_nvp("i", foo.i_);
+}
+
+template<class Archive>
+void load(Archive & ar, BarFree& bar, const unsigned int version)
+{
+  (void) version;
+  ar & hpp::serialization::make_nvp("i", bar.i_);
+}
+
+template<class Archive>
+void save(Archive & ar, const BarFree& bar, const unsigned int version)
+{
+  (void) version;
+  ar & hpp::serialization::make_nvp("i", bar.i_);
+}
+
+}
+}
+
+HPP_SERIALIZATION_FREE_IMPLEMENT(FooFree)
+
+HPP_SERIALIZATION_SPLIT_FREE_IMPLEMENT(BarFree)

@@ -20,6 +20,7 @@
 #define HPP_UTIL_SERIALIZATION_FWD_HH
 
 #include <boost/serialization/split_member.hpp>
+#include <boost/serialization/split_free.hpp>
 
 namespace boost {
 namespace serialization {
@@ -37,9 +38,9 @@ class access;
   void serialize(Archive & ar, const unsigned int version)
 
 /// Macro that should be put in a serializable class
-/// It declare a \c load and \c save function.
-/// \note for the load function, an empty constructor (that can leave the object
-///       unitialized) must exist.
+/// It declares functions \c serialize, \c load and \c save. The two last
+/// must be implemented by the caller.
+/// \note an empty constructor (that can leave the object unitialized) must exist.
 #define HPP_SERIALIZABLE_SPLIT()                                               \
     BOOST_SERIALIZATION_SPLIT_MEMBER()                                         \
     friend class boost::serialization::access;                                 \
@@ -49,5 +50,24 @@ class access;
     /** Allow to load class using \c boost::serialization. */                  \
     template<class Archive>                                                    \
     void load(Archive & ar, const unsigned int version)
+
+/// Macro that should be put in a serializable class, using a free function
+/// It declares free function \c serialize.
+/// This macro must be called outside of any namespace.
+/// \note an empty constructor (that can leave the object unitialized) must exist.
+#define HPP_SERIALIZABLE_FREE(type)                                            \
+  namespace boost { namespace serialization {                                  \
+  template<class Archive>                                                      \
+  void serialize(Archive & ar, type& t, const unsigned int version);           \
+  }}
+
+
+/// Macro that should be put in a serializable class, using a free function
+/// It declares free functions \c serialize, \c load and \c save. The two last
+/// must be implemented by the caller.
+/// This macro must be called outside of any namespace.
+/// \note an empty constructor (that can leave the object unitialized) must exist.
+#define HPP_SERIALIZABLE_SPLIT_FREE(type)                                      \
+  HPP_SERIALIZABLE_FREE(type)
 
 #endif // HPP_UTIL_SERIALIZATION_FWD_HH

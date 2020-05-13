@@ -35,3 +35,25 @@ class Bar {
     Bar() {}
     HPP_SERIALIZABLE_SPLIT();
 };
+
+class FooFree {
+  public:
+    FooFree(int i) : i_ (i) {};
+    int i_;
+
+  private:
+    FooFree() {}
+};
+
+HPP_SERIALIZABLE_FREE(FooFree)
+
+class BarFree {
+  public:
+    BarFree(int i) : i_ (i) {};
+    int i_;
+
+  private:
+    BarFree() {}
+};
+
+HPP_SERIALIZABLE_SPLIT_FREE(BarFree)
