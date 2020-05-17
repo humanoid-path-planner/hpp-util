@@ -31,6 +31,10 @@ DEFINE_TEST(exception)
 DEFINE_TEST(exception-factory)
 DEFINE_TEST(timer)
 
+ADD_UNIT_TEST(serialization serialization.cc serialization-test.cc)
+TARGET_INCLUDE_DIRECTORIES(serialization PRIVATE ${Boost_INCLUDE_DIRS})
+TARGET_LINK_LIBRARIES(serialization ${PROJECT_NAME})
+
 SET(HPP_LOGGINGDIR "${CMAKE_CURRENT_BINARY_DIR}")
 CONFIG_FILES(run_debug.sh)
 ADD_EXECUTABLE(debug debug.cc)
