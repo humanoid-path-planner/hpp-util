@@ -20,8 +20,8 @@
 #include "common.hh"
 #include "serialization.hh"
 
-#include <boost/archive/polymorphic_xml_iarchive.hpp>
-#include <boost/archive/polymorphic_xml_oarchive.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/archive/xml_oarchive.hpp>
 
 template<typename T>
 int run_test_tpl ()
@@ -29,12 +29,12 @@ int run_test_tpl ()
   std::stringstream ss;
   T t(10);
   {
-    boost::archive::polymorphic_xml_oarchive oa(ss);
+    boost::archive::xml_oarchive oa(ss);
     oa << boost::serialization::make_nvp("t", t);
   }
   Foo* t_r = NULL;
   {
-    boost::archive::polymorphic_xml_iarchive ia(ss);
+    boost::archive::xml_iarchive ia(ss);
     ia >> boost::serialization::make_nvp("t", t_r);
   }
 
