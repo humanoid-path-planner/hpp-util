@@ -1,5 +1,9 @@
                                                                 -*- outline -*-
-
+New in 4.10.0
+* Add macros, functions and test for serialization.
+* Add package.xml.
+* Use cmake to handle dependencies (submodule cmake).
+New in 4.9.0
 New in 3.3, 2018-05-17
 * Change License from GPL to LGPL.
 * Enable users to define scopes for benchmarking.
