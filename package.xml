@@ -1,16 +1,16 @@
-<?xml version='1.0'?> 
- <package format='2'> 
- <name>hpp-util</name> 
- <version>4.10.0</version>
- <description>Debugging tools for the HPP project. </description> 
- 
- <maintainer email='hpp@laas.fr'>Joseph Mirabel</maintainer> 
- <license>LGPL</license> 
- 
- <!-- <url type='website'>http://github.com/humanoid-path-planner/hpp-util </url> --> 
- 
- <author>Joseph Mirabel</author> 
- <author>Florent Lamiraux et al.</author> 
- 
- <buildtool_depend>catkin</buildtool_depend> 
+<?xml version='1.0'?>
+ <package format='2'>
+ <name>hpp-util</name>
+ <version>4.10.1</version>
+ <description>Debugging tools for the HPP project. </description>
+
+ <maintainer email='hpp@laas.fr'>Joseph Mirabel</maintainer>
+ <license>LGPL</license>
+
+ <!-- <url type='website'>http://github.com/humanoid-path-planner/hpp-util </url> -->
+
+ <author>Joseph Mirabel</author>
+ <author>Florent Lamiraux et al.</author>
+
+ <buildtool_depend>catkin</buildtool_depend>
  </package>
