@@ -25,6 +25,7 @@
    - benchmark tools
    - quality assurance tools (contract programming tools
      and "smart" assertions).
+   - \ref hpp_util_serialization "tools for serialization" used in HPP.
 
    The Doxygen documentation has been written to be a reference document.
    For tutorials and more user-friendly documentation, see the
@@ -52,4 +53,33 @@
    \code
      throw ::hpp::ExceptionFactory<std::runtime_error>() << "message" << variable << ::hpp::ThrowException();
    \endcode
+
+   \page hpp_util_serialization Serialization
+
+   Serialization of a class hierarchy can be done as follows. The class hierarchy is:
+   - AB inherits from A
+   - ABC inherits from AB (which inherits from A), thus there cannot be at the same time ABC and DBC.
+
+   In the header file,
+   - Use one of the \ref HPP_SERIALIZABLE macros.
+   - Except for the base class of the hierarchy (that is A), call \c BOOST_CLASS_EXPORT_KEY(AB)
+
+   In the definition file,
+   - implement a function like
+     \code
+       template<class Archive>
+       void AB::serialize(Archive & ar, const unsigned int version)
+       {
+         using namespace boost::serialization;
+         (void) version;
+         ar & make_nvp("base", base_object<A>(*this)); // declare inheritance.
+         // ...
+       }
+
+       HPP_SERIALIZATION_IMPLEMENT(AB); // Or the implement macro corresponding the called declaration macro.
+     \endcode
+   - Except for the base class of the hierarchy (that is A), call \c BOOST_CLASS_EXPORT_IMPLEMENT(AB)
+
+   If you know a class will not have any serializable child (i.e. AB exists but there is no no ABC), then
+   you can remove \c BOOST_CLASS_EXPORT_KEY(AB) and replace \c BOOST_CLASS_EXPORT_IMPLEMENT(AB) by \c BOOST_CLASS_EXPORT(AB)
 */

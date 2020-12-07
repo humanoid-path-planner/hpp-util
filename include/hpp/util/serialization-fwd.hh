@@ -21,6 +21,7 @@
 
 #include <boost/serialization/split_member.hpp>
 #include <boost/serialization/split_free.hpp>
+#include <boost/serialization/export.hpp>
 
 namespace boost {
 namespace serialization {
