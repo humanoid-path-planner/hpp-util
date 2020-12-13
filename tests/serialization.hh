@@ -26,22 +26,26 @@ class Foo {
     HPP_SERIALIZABLE();
 };
 
+BOOST_CLASS_EXPORT_KEY(Foo)
+
 class Bar {
   public:
     Bar(int i) : i_ (i) {};
     int i_;
+    Foo* f_;
 
   private:
     Bar() {}
     HPP_SERIALIZABLE_SPLIT();
 };
 
+BOOST_CLASS_EXPORT_KEY(Bar)
+
 class FooFree {
   public:
     FooFree(int i) : i_ (i) {};
     int i_;
 
-  private:
     FooFree() {}
 };
 
@@ -52,7 +56,6 @@ class BarFree {
     BarFree(int i) : i_ (i) {};
     int i_;
 
-  private:
     BarFree() {}
 };
 

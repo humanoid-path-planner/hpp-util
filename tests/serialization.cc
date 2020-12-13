@@ -18,7 +18,7 @@
 
 #include "serialization.hh"
 
-BOOST_CLASS_EXPORT(Foo)
+BOOST_CLASS_EXPORT_IMPLEMENT(Foo)
 
 template<class Archive>
 void Foo::serialize(Archive & ar, const unsigned int version)
@@ -29,13 +29,14 @@ void Foo::serialize(Archive & ar, const unsigned int version)
 
 HPP_SERIALIZATION_IMPLEMENT(Foo);
 
-BOOST_CLASS_EXPORT(Bar)
+BOOST_CLASS_EXPORT_IMPLEMENT(Bar)
 
 template<class Archive>
 void Bar::load(Archive & ar, const unsigned int version)
 {
   (void) version;
   ar & hpp::serialization::make_nvp("i", i_);
+  f_ = hpp::serialization::cast(ar).template get<Foo>("foo", true);
 }
 
 template<class Archive>

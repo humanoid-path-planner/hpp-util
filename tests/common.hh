@@ -22,8 +22,8 @@
 # include <iostream>
 # include "config.h"
 
-static const int TEST_FAILED = 10;
-static const int TEST_SUCCEED = 0;
+static constexpr int TEST_FAILED = 10;
+static constexpr int TEST_SUCCEED = 0;
 
 # define GENERATE_TEST()                                \
   int                                                   \
