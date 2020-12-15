@@ -119,6 +119,18 @@ int run_test_holder_inheritance()
   return TEST_SUCCEED;
 }
 
+int run_test_archive_parents()
+{
+  using namespace hpp::serialization;
+  struct P1 {};
+  struct P2 {};
+  typedef archive_tpl<boost::archive::xml_iarchive, P1, P2> type;
+  std::stringstream ss;
+  type t (ss);
+  (void) t;
+  return TEST_SUCCEED;
+}
+
 int run_test ()
 {
   if (run_test_tpl<Foo    >()      == TEST_FAILED) return TEST_FAILED;

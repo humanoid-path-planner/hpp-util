@@ -21,8 +21,10 @@
 
 #include <boost/version.hpp>
 #include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 
 #include <boost/preprocessor/comma_if.hpp>
@@ -53,15 +55,18 @@
 
 #define HPP_SERIALIZATION_SPLIT_IMPLEMENT(type)                                \
     _HPP_SERIALIZATION_SPLIT_IMPLEMENT(type::,boost::archive::xml,);           \
+    _HPP_SERIALIZATION_SPLIT_IMPLEMENT(type::,boost::archive::text,);          \
     _HPP_SERIALIZATION_SPLIT_IMPLEMENT(type::,boost::archive::binary,)
 
 #define HPP_SERIALIZATION_IMPLEMENT(type)                                      \
     _HPP_SERIALIZATION_IMPLEMENT(type::,boost::archive::xml,);                 \
+    _HPP_SERIALIZATION_IMPLEMENT(type::,boost::archive::text,);                \
     _HPP_SERIALIZATION_IMPLEMENT(type::,boost::archive::binary,)
 
 #define HPP_SERIALIZATION_FREE_IMPLEMENT(type)                                 \
     namespace boost { namespace serialization {                                \
     _HPP_SERIALIZATION_IMPLEMENT(,archive::xml,type& t);                       \
+    _HPP_SERIALIZATION_IMPLEMENT(,archive::text,type& t);                      \
     _HPP_SERIALIZATION_IMPLEMENT(,archive::binary,type& t);                    \
     }}
 
@@ -71,8 +76,9 @@
   void serialize(Archive & ar, type& t, const unsigned int version) {          \
     split_free(ar, t, version);                                                \
   }                                                                            \
-  _HPP_SERIALIZATION_IMPLEMENT(,archive::xml,type& t);                       \
-  _HPP_SERIALIZATION_IMPLEMENT(,archive::binary,type& t);                    \
+  _HPP_SERIALIZATION_IMPLEMENT(,archive::xml,type& t);                         \
+  _HPP_SERIALIZATION_IMPLEMENT(,archive::text,type& t);                        \
+  _HPP_SERIALIZATION_IMPLEMENT(,archive::binary,type& t);                      \
   }}
 
 namespace hpp {
@@ -190,8 +196,8 @@ protected:
   }
 };
 
-template<typename archive_base>
-class archive_tpl : public archive_base, public archive_ptr_holder
+template<typename archive_base, typename... parent_classes>
+class archive_tpl : public archive_base, public archive_ptr_holder, public parent_classes...
 {
 public:
   inline void initialize()
@@ -203,15 +209,18 @@ public:
 };
 
 template<typename Archive>
-archive_tpl<Archive>& cast(Archive& ar) { return dynamic_cast<archive_tpl<Archive>&>(ar); }
+archive_ptr_holder& cast(Archive& ar) { return dynamic_cast<archive_ptr_holder&>(ar); }
 template<typename Archive>
-archive_tpl<Archive>* cast(Archive* ar) { return dynamic_cast<archive_tpl<Archive>*>(ar); }
+archive_ptr_holder* cast(Archive* ar) { return dynamic_cast<archive_ptr_holder*>(ar); }
 
 typedef archive_tpl<boost::archive::binary_iarchive> binary_iarchive;
 typedef archive_tpl<boost::archive::binary_oarchive> binary_oarchive;
 
 typedef archive_tpl<boost::archive::xml_iarchive> xml_iarchive;
 typedef archive_tpl<boost::archive::xml_oarchive> xml_oarchive;
+
+typedef archive_tpl<boost::archive::text_iarchive> text_iarchive;
+typedef archive_tpl<boost::archive::text_oarchive> text_oarchive;
 } // namespace util
 } // namespace hpp
 
