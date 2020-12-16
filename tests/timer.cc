@@ -14,7 +14,6 @@
 // received a copy of the GNU Lesser General Public License along with
 // hpp-util. If not, see <http://www.gnu.org/licenses/>.
 
-#include <boost/assign/list_of.hpp>
 #include <cstdlib>
 
 #include "config.h"
@@ -41,7 +40,7 @@ HPP_DEFINE_TIMECOUNTER(testCounter2);
 int run_test ()
 {
   int N = 10;
-  logging.benchmark = Channel ("BENCHMARK", boost::assign::list_of<Output*> (&logging.console));
+  logging.benchmark = Channel ("BENCHMARK", { &logging.console });
   for (int i = 0; i < N; ++i) {
     HPP_START_TIMECOUNTER(testCounter);
     int k = 1 + (std::rand()%10);

@@ -17,7 +17,6 @@
 #include "config.h"
 
 #include <iostream>
-#include <boost/assign/list_of.hpp>
 #include <hpp/util/debug.hh>
 
 #include "common.hh"
@@ -28,7 +27,7 @@ int run_test ()
 {
   ConsoleOutput console;
   JournalOutput out ("debug.test.log");
-  Channel channel ("TEST", boost::assign::list_of<Output*> (&out)(&console));
+  Channel channel ("TEST", { &out, &console });
   for (int i = 0; i < 100; ++i) {
     std::stringstream ss;
     ss << i << hpp::iendl;

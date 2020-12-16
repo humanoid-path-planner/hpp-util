@@ -18,11 +18,7 @@
 #ifndef HPP_UTIL_TIMER_HH
 # define HPP_UTIL_TIMER_HH
 
-# include "boost/date_time/posix_time/posix_time_types.hpp"
-
-# ifdef HPP_ENABLE_BENCHMARK
-#  include <boost/date_time/posix_time/posix_time.hpp>
-# endif // HPP_ENABLE_BENCHMARK
+# include <chrono>
 
 # include <hpp/util/config.hh>
 # include <hpp/util/debug.hh>
@@ -34,26 +30,26 @@ namespace hpp
     class HPP_UTIL_DLLAPI Timer
     {
     public:
-      typedef boost::posix_time::ptime ptime;
-      typedef boost::posix_time::time_duration time_duration;
-      typedef boost::posix_time::time_period time_period;
+      typedef std::chrono::high_resolution_clock clock_type;
+      typedef clock_type::time_point time_point;
+      typedef std::chrono::duration<double> duration_type;
 
       explicit Timer (bool autoStart = false);
       Timer (const Timer&);
       Timer& operator= (const Timer&);
       ~Timer ();
 
-      const ptime& start ();
-      const ptime& stop ();
-      time_duration duration () const;
+      const time_point& start ();
+      const time_point& stop ();
+      double duration () const;
 
-      const ptime& getStart () const;
-      const ptime& getStop () const;
+      const time_point& getStart () const;
+      const time_point& getStop () const;
 
       std::ostream& print (std::ostream&) const;
     private:
-      ptime start_;
-      ptime end_;
+      time_point start_;
+      time_point end_;
     };
 
 # ifdef HPP_ENABLE_BENCHMARK
@@ -99,28 +95,29 @@ namespace hpp
           TimeCounter& tc;
         };
 
-        typedef boost::posix_time::ptime ptime;
-        typedef boost::posix_time::time_duration time_duration;
+        typedef std::chrono::high_resolution_clock clock_type;
+        typedef clock_type::time_point time_point;
+        typedef std::chrono::duration<double> duration_type;
 
         TimeCounter (const std::string& name);
 
         void start ();
-        time_duration stop ();
-        time_duration last ();
+        double stop ();
+        double last ();
         void reset ();
 
-        time_duration min () const;
-        time_duration max () const;
-        time_duration mean () const;
-        time_duration totalTime () const;
+        double min () const;
+        double max () const;
+        double mean () const;
+        double totalTime () const;
 
         std::ostream& print (std::ostream& os) const;
 
       private:
         std::string n_;
         unsigned long c_;
-        time_duration t_, last_, min_, max_;
-        ptime s_;
+        duration_type t_, last_, min_, max_;
+        time_point s_;
     };
 
     std::ostream& operator<< (std::ostream& os, const TimeCounter& tc);

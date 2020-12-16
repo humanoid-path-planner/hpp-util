@@ -22,10 +22,7 @@
 #include <fstream>
 #include <sstream>
 
-#include <boost/assign/list_of.hpp>
-#include <boost/filesystem.hpp>
-#include <boost/foreach.hpp>
-#include <boost/format.hpp>
+#include <boost/filesystem.hpp> // Need C++ 17 to remove this.
 
 #include "hpp/util/indent.hh"
 #include "hpp/util/debug.hh"
@@ -145,7 +142,7 @@ namespace hpp
 		    char const* function,
 		    const std::string& data)
     {
-      BOOST_FOREACH (Output* o, subscribers_)
+      for(Output* o: subscribers_)
 	if (o)
 	  o->write (*this, file, line, function, data);
     }
@@ -157,7 +154,7 @@ namespace hpp
 		    char const* function,
 		    const std::stringstream& data)
     {
-      BOOST_FOREACH (Output* o, subscribers_)
+      for(Output* o: subscribers_)
 	if (o)
 	  o->write (*this, file, line, function, data);
     }
@@ -220,9 +217,9 @@ namespace hpp
     {
       static const std::string packageName = "hpp";
 
-      boost::format fmter ("%1%.%2%.log");
-      fmter % filename % getpid ();
-      return debug::getFilename (fmter.str (), packageName);
+      std::stringstream name;
+      name << filename << '.' << getpid() << ".log";
+      return debug::getFilename (name.str (), packageName);
     }
 
     void
@@ -282,15 +279,15 @@ namespace hpp
 	journal ("journal"),
 	benchmarkJournal ("benchmark"),
 	error
-	("ERROR", boost::assign::list_of<Output*> (&journal) (&console)),
+	("ERROR", { &journal, &console }),
 	warning
-	("WARNING", boost::assign::list_of<Output*> (&journal) (&console)),
+	("WARNING", { &journal, &console }),
 	notice
-	("NOTICE", boost::assign::list_of<Output*> (&journal) (&console)),
+	("NOTICE", { &journal, &console }),
 	info
-	("INFO", boost::assign::list_of<Output*> (&journal)),
+	("INFO", { &journal }),
 	benchmark
-	("BENCHMARK", boost::assign::list_of<Output*> (&benchmarkJournal))
+	("BENCHMARK", { &benchmarkJournal })
     {}
 
     Logging::~Logging ()

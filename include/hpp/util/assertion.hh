@@ -10,8 +10,6 @@
 
 #ifndef HPP_UTIL_ASSERTION_HH
 # define HPP_UTIL_ASSERTION_HH
-# include <boost/scope_exit.hpp>
-
 # include <hpp/util/config.hh>
 # include <hpp/util/exception.hh>
 

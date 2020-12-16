@@ -16,11 +16,11 @@
 // along with hpp-util.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <iostream>
-//#include <boost/date_time/microsec_time_clock.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/format.hpp>
+#include <iomanip>
 
 #include "hpp/util/timer.hh"
+
+using namespace std::chrono;
 
 namespace hpp
 {
@@ -52,98 +52,96 @@ namespace hpp
     Timer::~Timer ()
     {}
 
-    const Timer::ptime&
+    const Timer::time_point&
     Timer::start ()
     {
-      return start_ = boost::posix_time::microsec_clock::universal_time ();
+      return start_ = clock_type::now();
     }
 
-    const Timer::ptime&
+    const Timer::time_point&
     Timer::stop ()
     {
-      return end_ = boost::posix_time::microsec_clock::universal_time ();
+      return end_ = clock_type::now();
     }
 
-    const Timer::ptime&
+    const Timer::time_point&
     Timer::getStart () const
     {
       return start_;
     }
 
-    const Timer::ptime&
+    const Timer::time_point&
     Timer::getStop () const
     {
       return end_;
     }
 
-    Timer::time_duration
+    double
     Timer::duration () const
     {
-      time_period duration (start_, end_);
-      return duration.length ();
+      return duration_type(end_ - start_).count();
     }
 
     std::ostream&
     Timer::print (std::ostream& o) const
     {
-      using boost::format;
-      return o <<
-	(format
-	 ("timer started at ``%1%'' and ended at ``%2%'' (elapsed time ``%3%''")
-	 % start_ % end_ % duration ());
+      auto time = clock_type::to_time_t(start_);
+      return o << "timer started at " <<
+        std::put_time(std::localtime(&time), "%F %T") << " and elapsed time "
+        "is " << duration();
     }
 
     TimeCounter::TimeCounter (const std::string& name) :
-      n_ (name), c_ (0), t_ (0,0,0,0),
-      min_ (boost::date_time::pos_infin), max_ (0,0,0,0)
+      n_ (name), c_ (0), t_ (duration_type::zero()),
+      min_ (duration_type::max()), max_ (duration_type::min())
     {}
 
     void TimeCounter::start ()
     {
-      s_ = boost::posix_time::microsec_clock::universal_time ();
+      s_ = clock_type::now();
     }
 
-    TimeCounter::time_duration TimeCounter::stop ()
+    double TimeCounter::stop ()
     {
-      last_ = boost::posix_time::microsec_clock::universal_time () - s_;
+      last_ = clock_type::now() - s_;
       min_ = std::min(last_, min_);
       max_ = std::max(last_, max_);
       t_ += last_;
       ++c_;
-      return last_;
+      return last_.count();
     }
 
-    TimeCounter::time_duration TimeCounter::last ()
+    double TimeCounter::last ()
     {
-      return last_;
+      return last_.count();
     }
 
     void TimeCounter::reset ()
     {
-      t_ = time_duration (0,0,0,0);
+      t_ = duration_type::zero();
       c_ = 0;
-      min_ = time_duration(boost::date_time::pos_infin);
-      max_ = time_duration(0,0,0,0);
+      min_ = duration_type::max();
+      max_ = duration_type::min();
     }
 
-    TimeCounter::time_duration TimeCounter::min () const
+    double TimeCounter::min () const
     {
-      return min_;
+      return min_.count();
     }
 
-    TimeCounter::time_duration TimeCounter::max () const
+    double TimeCounter::max () const
     {
-      return max_;
+      return max_.count();
     }
 
-    TimeCounter::time_duration TimeCounter::mean () const
+    double TimeCounter::mean () const
     {
-      return ( c_ > 0 ) ? t_ / (int)c_ : time_duration (0,0,0,0);
+      return ( c_ > 0 ) ? (t_ / (int)c_).count() : 0;
     }
 
-    TimeCounter::time_duration TimeCounter::totalTime () const
+    double TimeCounter::totalTime () const
     {
-      return t_;
+      return t_.count();
     }
 
     std::ostream& TimeCounter::print (std::ostream& os) const

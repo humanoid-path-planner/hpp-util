@@ -21,9 +21,9 @@
 # include <list>
 # include <string>
 # include <iostream>
-# include <tinyxml.h>
+# include <functional>
 
-# include <boost/function.hpp>
+# include <tinyxml.h>
 
 namespace hpp {
   namespace util {
@@ -222,7 +222,7 @@ namespace hpp {
       /// To extend its capabilities, see ObjectFactory.
       class Parser {
         public:
-          typedef boost::function <ObjectFactory* (ObjectFactory*, const XMLElement*)>
+          typedef std::function <ObjectFactory* (ObjectFactory*, const XMLElement*)>
                     FactoryType;
 
           /// Constructor

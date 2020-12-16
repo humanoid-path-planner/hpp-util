@@ -9,7 +9,6 @@
 // See the COPYING file for more information.
 
 #include <iostream>
-#include <boost/format.hpp>
 
 #ifdef HPP_LOG_EXCEPTION
 # include "hpp/util/debug.hh"
@@ -65,8 +64,7 @@ namespace hpp
   std::ostream&
   Exception::print (std::ostream& o) const throw ()
   {
-    using boost::format;
-    o << (format ("%1%:%2%: %3%") % file_ % line_ % message_);
+    o << file_ << ':' << line_ << ": " << message_;
     return o;
   }
 

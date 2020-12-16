@@ -13,6 +13,17 @@
 
 # include <boost/smart_ptr.hpp>
 
+namespace hpp {
+  using boost::shared_ptr;
+  using boost::weak_ptr;
+
+  using boost::static_pointer_cast;
+  using boost::dynamic_pointer_cast;
+  using boost::const_pointer_cast;
+
+  using boost::make_shared;
+} // namespace hpp
+
 /// Defines the four types of smart pointers associated with type <tt>\a t</tt>.
 /// If <tt>\a t</tt> is \c CMyClass then
 ///  - the type of a shared pointer to <tt>\a t</tt> is \c CMyClassShPtr
@@ -23,8 +34,8 @@
 ///    \c CMyClassConstWkPtr_t
 
 # define HPP_POINTER_DEFS(t)		 \
-  typedef boost::weak_ptr <t> t##WkPtr_t;		 \
-  typedef boost::weak_ptr <const t> t##ConstWkPtr_t;	 \
+  typedef hpp::weak_ptr <t> t##WkPtr_t;		 \
+  typedef hpp::weak_ptr <const t> t##ConstWkPtr_t;	 \
   struct e_n_d__w_i_t_h__s_e_m_i_c_o_l_o_n
 
 /** Makes a forward declaration of class <tt>\a t</tt> and of the four
@@ -35,8 +46,8 @@
   HPP_POINTER_DEFS(t);			\
   struct e_n_d__w_i_t_h__s_e_m_i_c_o_l_o_n
 
-# define HPP_STATIC_PTR_CAST(t, x) boost::static_pointer_cast < t > (x)
-# define HPP_DYNAMIC_PTR_CAST(t, x) boost::dynamic_pointer_cast < t > (x)
+# define HPP_STATIC_PTR_CAST(t, x) hpp::static_pointer_cast < t > (x)
+# define HPP_DYNAMIC_PTR_CAST(t, x) hpp::dynamic_pointer_cast < t > (x)
 # ifndef NDEBUG
 #  define HPP_STATIC_CAST_REF_CHECK(t, x)\
   try {\
