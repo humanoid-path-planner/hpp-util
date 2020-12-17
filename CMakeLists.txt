@@ -49,6 +49,7 @@ SET(${PROJECT_NAME}_HEADERS
   include/hpp/util/factories/sequence.hh
   include/hpp/util/serialization.hh
   include/hpp/util/serialization-fwd.hh
+  include/hpp/util/string.hh
   )
 
 SET(${PROJECT_NAME}_SOURCES

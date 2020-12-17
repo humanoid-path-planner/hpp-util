@@ -29,6 +29,7 @@ DEFINE_TEST(assertion)
 DEFINE_TEST(exception)
 DEFINE_TEST(exception-factory)
 DEFINE_TEST(timer)
+DEFINE_TEST(string)
 
 ADD_UNIT_TEST(serialization serialization.cc serialization-test.cc)
 TARGET_LINK_LIBRARIES(serialization ${PROJECT_NAME})
