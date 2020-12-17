@@ -42,7 +42,6 @@ SET(${PROJECT_NAME}_HEADERS
   include/hpp/util/exception-factory.hh
   include/hpp/util/indent.hh
   include/hpp/util/pointer.hh
-  include/hpp/util/portability.hh
   include/hpp/util/timer.hh
   include/hpp/util/version.hh
   include/hpp/util/parser.hh
