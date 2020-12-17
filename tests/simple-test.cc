@@ -19,6 +19,7 @@
 
 #include <iostream>
 #include <hpp/util/debug.hh>
+#include <hpp/util/version.hh>
 
 #include "common.hh"
 
@@ -27,7 +28,9 @@ int run_test ();
 
 int run_test ()
 {
-  return 0;
+  if (hpp::util::checkVersion(HPP_UTIL_VERSION) != 0)
+    return TEST_FAILED;
+  return TEST_SUCCEED;
 }
 
 GENERATE_TEST ()

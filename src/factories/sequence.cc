@@ -16,7 +16,7 @@
 
 #include "hpp/util/factories/sequence.hh"
 
-#include <boost/algorithm/string.hpp>
+#include <hpp/util/string.hh>
 #include <iostream>
 
 #include "hpp/util/debug.hh"
@@ -98,22 +98,17 @@ namespace hpp {
       {
         values_.clear ();
         std::string t(text->Value ());
-        typedef std::list<std::string> StringList;
-        StringList values;
-
-        boost::algorithm::split (values, t,
-            boost::algorithm::is_any_of (" \n\t\r"),
-            boost::algorithm::token_compress_on);
-        values.remove_if (StringIsEmpty());
-        if (size_ > 0 && values.size () != size_) {
+        typedef std::vector<std::string> strings_t;
+        strings_t values = string_split(t.begin(), t.end(), " \n\t\r");
+        auto end = std::remove(values.begin(), values.end(), std::string());
+        values.erase(end, values.end());
+        if (size_ > 0 && values.size () != size_)
           throw std::invalid_argument ("Wrong sequence size");
-        }
 
         ValueType v;
-        for (StringList::const_iterator it = values.begin ();
-            it != values.end (); it++) {
-          if (!cast <ValueType> (*it, &v)) {
-            hppDout (error, "could not parse value "<< *it);
+        for (const std::string s : values) {
+          if (!cast <ValueType> (s, &v)) {
+            hppDout (error, "could not parse value "<< s);
           }
           values_.push_back (v);
         }

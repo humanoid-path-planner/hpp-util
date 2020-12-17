@@ -20,9 +20,10 @@
 #include "hpp/util/version.hh"
 
 #include <string>
+#include <assert.h>
 #include <vector>
 
-#include <boost/algorithm/string.hpp>
+#include <hpp/util/string.hh>
 
 namespace hpp
 {
@@ -32,11 +33,10 @@ namespace hpp
 
     int checkVersion (const char* header_version)
     {
-      std::vector<std::string> headerVersion;
-      std::vector<std::string> libraryVersion;
-
-      boost::split (headerVersion, header_version, boost::is_any_of("."));
-      boost::split (libraryVersion, version, boost::is_any_of("."));
+      std::vector<std::string> headerVersion
+        = string_split(header_version, header_version+std::strlen(header_version), '.');
+      std::vector<std::string> libraryVersion
+        = string_split(version, version+std::strlen(version), '.');
 
       long unsigned s = std::max (headerVersion.size (),
 				  libraryVersion.size ());
@@ -46,10 +46,8 @@ namespace hpp
       assert (headerVersion.size () == libraryVersion.size ());
 
       for (long unsigned i = 0; i < s; ++i)
-	{
-	  if (headerVersion != libraryVersion)
-	    return (headerVersion > libraryVersion) ? -1 : 1;
-	}
+        if (headerVersion != libraryVersion)
+          return (headerVersion > libraryVersion) ? -1 : 1;
       return 0;
     }
   } // end of namespace util.
