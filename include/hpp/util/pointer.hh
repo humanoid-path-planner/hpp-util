@@ -11,17 +11,17 @@
 #ifndef HPP_UTIL_POINTER_HH
 # define HPP_UTIL_POINTER_HH
 
-# include <boost/smart_ptr.hpp>
+# include <memory>
 
 namespace hpp {
-  using boost::shared_ptr;
-  using boost::weak_ptr;
+  using std::shared_ptr;
+  using std::weak_ptr;
 
-  using boost::static_pointer_cast;
-  using boost::dynamic_pointer_cast;
-  using boost::const_pointer_cast;
+  using std::static_pointer_cast;
+  using std::dynamic_pointer_cast;
+  using std::const_pointer_cast;
 
-  using boost::make_shared;
+  using std::make_shared;
 } // namespace hpp
 
 /// Defines the four types of smart pointers associated with type <tt>\a t</tt>.
