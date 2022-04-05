@@ -27,38 +27,34 @@
 // DAMAGE.
 
 #ifndef HPP_UTIL_FACTORIES_IGNORETAG_HH
-# define HPP_UTIL_FACTORIES_IGNORETAG_HH
+#define HPP_UTIL_FACTORIES_IGNORETAG_HH
 
-# include "hpp/util/parser.hh"
+#include "hpp/util/parser.hh"
 
 namespace hpp {
-  namespace util {
-    namespace parser {
-      /// \addtogroup factories
-      /// \{
+namespace util {
+namespace parser {
+/// \addtogroup factories
+/// \{
 
-      /// Class used to ignore a tag.
-      /// If the parser knows it should ignore a tag, no warning will be
-      /// printed in the logs. Moreover, its children won't be parsed.
-      class IgnoreTagFactory : public ObjectFactory {
-        public:
-          IgnoreTagFactory (ObjectFactory* parent, const XMLElement* element) :
-            ObjectFactory (parent, element) {}
+/// Class used to ignore a tag.
+/// If the parser knows it should ignore a tag, no warning will be
+/// printed in the logs. Moreover, its children won't be parsed.
+class IgnoreTagFactory : public ObjectFactory {
+ public:
+  IgnoreTagFactory(ObjectFactory* parent, const XMLElement* element)
+      : ObjectFactory(parent, element) {}
 
-          bool init ()
-          {
-            return false;
-          }
+  bool init() { return false; }
 
-          void impl_write (XMLElement* element) const
-          {
-            element->InsertEndChild (XMLComment ("This tag was ignored"));
-          }
-      };
+  void impl_write(XMLElement* element) const {
+    element->InsertEndChild(XMLComment("This tag was ignored"));
+  }
+};
 
-      /// \}
-    } // namespace parser
-  } // namespace manipulation
-} // namespace hpp
+/// \}
+}  // namespace parser
+}  // namespace util
+}  // namespace hpp
 
-#endif // HPP_UTIL_FACTORIES_IGNORETAG_HH
+#endif  // HPP_UTIL_FACTORIES_IGNORETAG_HH

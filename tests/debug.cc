@@ -26,26 +26,24 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 // DAMAGE.
 
-#include "config.h"
-
-#include <iostream>
 #include <hpp/util/debug.hh>
+#include <iostream>
 
 #include "common.hh"
+#include "config.h"
 
 using namespace hpp::debug;
 
-int run_test ()
-{
+int run_test() {
   ConsoleOutput console;
-  JournalOutput out ("debug.test.log");
-  Channel channel ("TEST", { &out, &console });
+  JournalOutput out("debug.test.log");
+  Channel channel("TEST", {&out, &console});
   for (int i = 0; i < 100; ++i) {
     std::stringstream ss;
     ss << i << hpp::iendl;
-    channel.write (__FILE__, __LINE__, __PRETTY_FUNCTION__, ss);
+    channel.write(__FILE__, __LINE__, __PRETTY_FUNCTION__, ss);
   }
   return 0;
 }
 
-GENERATE_TEST ()
+GENERATE_TEST()

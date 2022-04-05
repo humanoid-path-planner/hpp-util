@@ -25,22 +25,18 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 // DAMAGE.
 
-#include "config.h"
-
-#include <iostream>
 #include <hpp/util/debug.hh>
 #include <hpp/util/version.hh>
+#include <iostream>
 
 #include "common.hh"
+#include "config.h"
 
+int run_test();
 
-int run_test ();
-
-int run_test ()
-{
-  if (hpp::util::checkVersion(HPP_UTIL_VERSION) != 0)
-    return TEST_FAILED;
+int run_test() {
+  if (hpp::util::checkVersion(HPP_UTIL_VERSION) != 0) return TEST_FAILED;
   return TEST_SUCCEED;
 }
 
-GENERATE_TEST ()
+GENERATE_TEST()

@@ -25,57 +25,43 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 // DAMAGE.
 
-#include "config.h"
-
 #include <cassert>
-#include <iostream>
 #include <hpp/util/exception.hh>
+#include <iostream>
 
 #include "common.hh"
+#include "config.h"
 
-HPP_MAKE_EXCEPTION_NO_QUALIFIER (CustomException);
+HPP_MAKE_EXCEPTION_NO_QUALIFIER(CustomException);
 
-int run_test ();
+int run_test();
 
-int run_test ()
-{
-  ::hpp::Exception exception ("put your message here",
-			      "filename",
-			      0);
+int run_test() {
+  ::hpp::Exception exception("put your message here", "filename", 0);
   std::cout << exception << std::endl;
 
-  try
-    {
-      HPP_THROW_EXCEPTION_ ("this exception should be catched");
-      assert (0);
-    }
-  catch (::hpp::Exception& exception)
-    {
-      std::cout << exception << std::endl;
-    }
+  try {
+    HPP_THROW_EXCEPTION_("this exception should be catched");
+    assert(0);
+  } catch (::hpp::Exception& exception) {
+    std::cout << exception << std::endl;
+  }
 
-  try
-    {
-      HPP_THROW_EXCEPTION (::hpp::Exception,
-			   "this exception should be catched");
-      assert (0);
-    }
-  catch (::hpp::Exception& exception)
-    {
-      std::cout << exception << std::endl;
-    }
+  try {
+    HPP_THROW_EXCEPTION(::hpp::Exception, "this exception should be catched");
+    assert(0);
+  } catch (::hpp::Exception& exception) {
+    std::cout << exception << std::endl;
+  }
 
-  try
-    {
-      HPP_THROW_EXCEPTION (CustomException,
-			   "this custom exception should be catched");
-      assert (0);
-    }
-  catch (::hpp::Exception& exception)
-    {
-      std::cout << exception << std::endl;
-    }
+  try {
+    HPP_THROW_EXCEPTION(CustomException,
+                        "this custom exception should be catched");
+    assert(0);
+  } catch (::hpp::Exception& exception) {
+    std::cout << exception << std::endl;
+  }
   return 0;
 }
 
-GENERATE_TEST ()
+GENERATE_TEST()

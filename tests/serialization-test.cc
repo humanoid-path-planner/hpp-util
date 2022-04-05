@@ -26,17 +26,16 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 // DAMAGE.
 
-#include <sstream>
-
-#include "config.h"
-#include "common.hh"
 #include "serialization.hh"
 
 #include <hpp/util/serialization.hh>
+#include <sstream>
 
-template<typename T>
-int run_test_tpl ()
-{
+#include "common.hh"
+#include "config.h"
+
+template <typename T>
+int run_test_tpl() {
   std::stringstream ss;
   T* t(new T(10));
   {
@@ -51,16 +50,16 @@ int run_test_tpl ()
   }
 
   if (t_r == NULL || t_r->i_ != t->i_) {
-    std::cerr << "Failed to deserialize " << hpp::serialization::guid<T>() << " class" << std::endl;
+    std::cerr << "Failed to deserialize " << hpp::serialization::guid<T>()
+              << " class" << std::endl;
     return TEST_FAILED;
   }
   delete t;
   return TEST_SUCCEED;
 }
 
-int run_test_bar (bool check_throw)
-{
-  std::unique_ptr<Foo> foo (new Foo(1));
+int run_test_bar(bool check_throw) {
+  std::unique_ptr<Foo> foo(new Foo(1));
   std::stringstream ss;
   Bar* t(new Bar(10));
   {
@@ -79,9 +78,9 @@ int run_test_bar (bool check_throw)
     else
       ia.insert("foo", new Bar(0));
     try {
-      caught_error=true;
+      caught_error = true;
       ia.initialize();
-      caught_error=false;
+      caught_error = false;
       ia >> boost::serialization::make_nvp("t", t_r);
     } catch (const std::invalid_argument& e) {
       std::cerr << e.what() << std::endl;
@@ -107,14 +106,15 @@ int run_test_bar (bool check_throw)
   return TEST_SUCCEED;
 }
 
-struct S1 { virtual ~S1() = default; };
+struct S1 {
+  virtual ~S1() = default;
+};
 struct S2 : S1 {};
 
 BOOST_CLASS_EXPORT_KEY(S1)
 BOOST_CLASS_EXPORT_KEY(S2)
 
-int run_test_holder_inheritance()
-{
+int run_test_holder_inheritance() {
   using namespace hpp::serialization;
   archive_ptr_holder aph;
   S2 s2;
@@ -131,27 +131,25 @@ int run_test_holder_inheritance()
   return TEST_SUCCEED;
 }
 
-int run_test_archive_parents()
-{
+int run_test_archive_parents() {
   using namespace hpp::serialization;
   struct P1 {};
   struct P2 {};
   typedef archive_tpl<boost::archive::xml_iarchive, P1, P2> type;
   std::stringstream ss;
-  type t (ss);
-  (void) t;
+  type t(ss);
+  (void)t;
   return TEST_SUCCEED;
 }
 
-int run_test ()
-{
-  if (run_test_tpl<Foo    >()      == TEST_FAILED) return TEST_FAILED;
-  if (run_test_bar         (true)  == TEST_FAILED) return TEST_FAILED;
-  if (run_test_bar         (false) == TEST_FAILED) return TEST_FAILED;
-  if (run_test_tpl<FooFree>()      == TEST_FAILED) return TEST_FAILED;
-  if (run_test_tpl<BarFree>()      == TEST_FAILED) return TEST_FAILED;
-  if (run_test_holder_inheritance()== TEST_FAILED) return TEST_FAILED;
+int run_test() {
+  if (run_test_tpl<Foo>() == TEST_FAILED) return TEST_FAILED;
+  if (run_test_bar(true) == TEST_FAILED) return TEST_FAILED;
+  if (run_test_bar(false) == TEST_FAILED) return TEST_FAILED;
+  if (run_test_tpl<FooFree>() == TEST_FAILED) return TEST_FAILED;
+  if (run_test_tpl<BarFree>() == TEST_FAILED) return TEST_FAILED;
+  if (run_test_holder_inheritance() == TEST_FAILED) return TEST_FAILED;
   return TEST_SUCCEED;
 }
 
-GENERATE_TEST ()
+GENERATE_TEST()
