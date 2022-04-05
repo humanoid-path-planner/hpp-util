@@ -34,69 +34,51 @@
 #include <iostream>
 
 #ifdef HPP_LOG_EXCEPTION
-# include "hpp/util/debug.hh"
-#endif // HPP_LOG_EXCEPTION
+#include "hpp/util/debug.hh"
+#endif  // HPP_LOG_EXCEPTION
 
 #include "hpp/util/exception.hh"
 
-namespace hpp
-{
-  Exception::Exception (const std::string& message,
-			const std::string& file,
-			unsigned line) throw ()
-    : std::exception (),
-      message_ (message),
-      file_ (file),
-      line_ (line)
-  {
-    // Allow to transparently log created exceptions.
+namespace hpp {
+Exception::Exception(const std::string& message, const std::string& file,
+                     unsigned line) throw()
+    : std::exception(), message_(message), file_(file), line_(line) {
+  // Allow to transparently log created exceptions.
 #ifdef HPP_LOG_EXCEPTION
-    hppDout (info, *this);
-#endif // HPP_LOG_EXCEPTION
-  }
+  hppDout(info, *this);
+#endif  // HPP_LOG_EXCEPTION
+}
 
-  Exception::~Exception () throw ()
-  {}
+Exception::~Exception() throw() {}
 
-  Exception::Exception (const Exception& exception) throw ()
-    : std::exception (),
-      message_ (exception.message_),
-      file_ (exception.file_),
-      line_ (exception.line_)
-  {}
+Exception::Exception(const Exception& exception) throw()
+    : std::exception(),
+      message_(exception.message_),
+      file_(exception.file_),
+      line_(exception.line_) {}
 
-  Exception&
-  Exception::operator= (const Exception& exception) throw ()
-  {
-    if (&exception == this)
-      return *this;
+Exception& Exception::operator=(const Exception& exception) throw() {
+  if (&exception == this) return *this;
 
-    message_ = exception.message_;
-    file_  = exception.file_;
-    line_  = exception.line_;
-    return *this;
-  }
+  message_ = exception.message_;
+  file_ = exception.file_;
+  line_ = exception.line_;
+  return *this;
+}
 
-  const char*
-  Exception::what () const throw ()
-  {
-    //FIXME: display line and file too.
-    return message_.c_str ();
-  }
+const char* Exception::what() const throw() {
+  // FIXME: display line and file too.
+  return message_.c_str();
+}
 
-  std::ostream&
-  Exception::print (std::ostream& o) const throw ()
-  {
-    o << file_ << ':' << line_ << ": " << message_;
-    return o;
-  }
+std::ostream& Exception::print(std::ostream& o) const throw() {
+  o << file_ << ':' << line_ << ": " << message_;
+  return o;
+}
 
+std::ostream& operator<<(std::ostream& o, const Exception& exception) {
+  exception.print(o);
+  return o;
+}
 
-  std::ostream&
-  operator<< (std::ostream& o, const Exception& exception)
-  {
-    exception.print (o);
-    return o;
-  }
-
-} // end of namespace hpp.
+}  // end of namespace hpp.

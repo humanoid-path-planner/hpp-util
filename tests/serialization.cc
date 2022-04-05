@@ -26,36 +26,33 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 // DAMAGE.
 
-#include <hpp/util/serialization.hh>
-
 #include "serialization.hh"
+
+#include <hpp/util/serialization.hh>
 
 BOOST_CLASS_EXPORT_IMPLEMENT(Foo)
 
-template<class Archive>
-void Foo::serialize(Archive & ar, const unsigned int version)
-{
-  (void) version;
-  ar & hpp::serialization::make_nvp("i", i_);
+template <class Archive>
+void Foo::serialize(Archive& ar, const unsigned int version) {
+  (void)version;
+  ar& hpp::serialization::make_nvp("i", i_);
 }
 
 HPP_SERIALIZATION_IMPLEMENT(Foo);
 
 BOOST_CLASS_EXPORT_IMPLEMENT(Bar)
 
-template<class Archive>
-void Bar::load(Archive & ar, const unsigned int version)
-{
-  (void) version;
-  ar & hpp::serialization::make_nvp("i", i_);
+template <class Archive>
+void Bar::load(Archive& ar, const unsigned int version) {
+  (void)version;
+  ar& hpp::serialization::make_nvp("i", i_);
   f_ = hpp::serialization::cast(ar).template get<Foo>("foo", true);
 }
 
-template<class Archive>
-void Bar::save(Archive & ar, const unsigned int version) const
-{
-  (void) version;
-  ar & hpp::serialization::make_nvp("i", i_);
+template <class Archive>
+void Bar::save(Archive& ar, const unsigned int version) const {
+  (void)version;
+  ar& hpp::serialization::make_nvp("i", i_);
 }
 
 HPP_SERIALIZATION_SPLIT_IMPLEMENT(Bar);
@@ -63,29 +60,26 @@ HPP_SERIALIZATION_SPLIT_IMPLEMENT(Bar);
 namespace boost {
 namespace serialization {
 
-template<class Archive>
-void serialize(Archive & ar, FooFree& foo, const unsigned int version)
-{
-  (void) version;
-  ar & hpp::serialization::make_nvp("i", foo.i_);
+template <class Archive>
+void serialize(Archive& ar, FooFree& foo, const unsigned int version) {
+  (void)version;
+  ar& hpp::serialization::make_nvp("i", foo.i_);
 }
 
-template<class Archive>
-void load(Archive & ar, BarFree& bar, const unsigned int version)
-{
-  (void) version;
-  ar & hpp::serialization::make_nvp("i", bar.i_);
+template <class Archive>
+void load(Archive& ar, BarFree& bar, const unsigned int version) {
+  (void)version;
+  ar& hpp::serialization::make_nvp("i", bar.i_);
 }
 
-template<class Archive>
-void save(Archive & ar, const BarFree& bar, const unsigned int version)
-{
-  (void) version;
-  ar & hpp::serialization::make_nvp("i", bar.i_);
+template <class Archive>
+void save(Archive& ar, const BarFree& bar, const unsigned int version) {
+  (void)version;
+  ar& hpp::serialization::make_nvp("i", bar.i_);
 }
 
-}
-}
+}  // namespace serialization
+}  // namespace boost
 
 HPP_SERIALIZATION_FREE_IMPLEMENT(FooFree)
 

@@ -25,40 +25,36 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 // DAMAGE.
 
-#include "config.h"
-
 #include "hpp/util/version.hh"
 
-#include <string>
 #include <assert.h>
-#include <vector>
 
 #include <hpp/util/string.hh>
+#include <string>
+#include <vector>
 
-namespace hpp
-{
-  namespace util
-  {
-    const char* version = PACKAGE_VERSION;
+#include "config.h"
 
-    int checkVersion (const char* header_version)
-    {
-      std::vector<std::string> headerVersion
-        = string_split(header_version, header_version+std::strlen(header_version), '.');
-      std::vector<std::string> libraryVersion
-        = string_split(version, version+std::strlen(version), '.');
+namespace hpp {
+namespace util {
+const char* version = PACKAGE_VERSION;
 
-      long unsigned s = std::max (headerVersion.size (),
-				  libraryVersion.size ());
-      headerVersion.resize (s);
-      libraryVersion.resize (s);
+int checkVersion(const char* header_version) {
+  std::vector<std::string> headerVersion = string_split(
+      header_version, header_version + std::strlen(header_version), '.');
+  std::vector<std::string> libraryVersion =
+      string_split(version, version + std::strlen(version), '.');
 
-      assert (headerVersion.size () == libraryVersion.size ());
+  long unsigned s = std::max(headerVersion.size(), libraryVersion.size());
+  headerVersion.resize(s);
+  libraryVersion.resize(s);
 
-      for (long unsigned i = 0; i < s; ++i)
-        if (headerVersion != libraryVersion)
-          return (headerVersion > libraryVersion) ? -1 : 1;
-      return 0;
-    }
-  } // end of namespace util.
-} // end of namespace hpp.
+  assert(headerVersion.size() == libraryVersion.size());
+
+  for (long unsigned i = 0; i < s; ++i)
+    if (headerVersion != libraryVersion)
+      return (headerVersion > libraryVersion) ? -1 : 1;
+  return 0;
+}
+}  // end of namespace util.
+}  // end of namespace hpp.

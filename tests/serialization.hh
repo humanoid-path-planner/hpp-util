@@ -29,46 +29,46 @@
 #include <hpp/util/serialization-fwd.hh>
 
 class Foo {
-  public:
-    Foo(int i) : i_ (i) {};
-    int i_;
+ public:
+  Foo(int i) : i_(i){};
+  int i_;
 
-  private:
-    Foo() {}
-    HPP_SERIALIZABLE();
+ private:
+  Foo() {}
+  HPP_SERIALIZABLE();
 };
 
 BOOST_CLASS_EXPORT_KEY(Foo)
 
 class Bar {
-  public:
-    Bar(int i) : i_ (i) {};
-    int i_;
-    Foo* f_;
+ public:
+  Bar(int i) : i_(i){};
+  int i_;
+  Foo* f_;
 
-  private:
-    Bar() {}
-    HPP_SERIALIZABLE_SPLIT();
+ private:
+  Bar() {}
+  HPP_SERIALIZABLE_SPLIT();
 };
 
 BOOST_CLASS_EXPORT_KEY(Bar)
 
 class FooFree {
-  public:
-    FooFree(int i) : i_ (i) {};
-    int i_;
+ public:
+  FooFree(int i) : i_(i){};
+  int i_;
 
-    FooFree() {}
+  FooFree() {}
 };
 
 HPP_SERIALIZABLE_FREE(FooFree)
 
 class BarFree {
-  public:
-    BarFree(int i) : i_ (i) {};
-    int i_;
+ public:
+  BarFree(int i) : i_(i){};
+  int i_;
 
-    BarFree() {}
+  BarFree() {}
 };
 
 HPP_SERIALIZABLE_SPLIT_FREE(BarFree)

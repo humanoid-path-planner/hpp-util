@@ -38,24 +38,21 @@
 using namespace hpp::debug;
 
 // the function f() does some time-consuming work
-void f(const int extra)
-{
-    volatile double d = 0;
-    for(int n=0; n<extra * 1000; ++n)
-       for(int m=0; m<1000; ++m)
-           d += d*n*m;
+void f(const int extra) {
+  volatile double d = 0;
+  for (int n = 0; n < extra * 1000; ++n)
+    for (int m = 0; m < 1000; ++m) d += d * n * m;
 }
 
 HPP_DEFINE_TIMECOUNTER(testCounter);
 HPP_DEFINE_TIMECOUNTER(testCounter2);
 
-int run_test ()
-{
+int run_test() {
   int N = 10;
-  logging.benchmark = Channel ("BENCHMARK", { &logging.console });
+  logging.benchmark = Channel("BENCHMARK", {&logging.console});
   for (int i = 0; i < N; ++i) {
     HPP_START_TIMECOUNTER(testCounter);
-    int k = 1 + (std::rand()%10);
+    int k = 1 + (std::rand() % 10);
     // std::cout << k << std::endl;
     f(k);
     HPP_STOP_TIMECOUNTER(testCounter);
@@ -64,7 +61,7 @@ int run_test ()
   HPP_DISPLAY_TIMECOUNTER(testCounter);
   for (int i = 0; i < N; ++i) {
     HPP_SCOPE_TIMECOUNTER(testCounter2);
-    int k = 1 + (std::rand()%10);
+    int k = 1 + (std::rand() % 10);
     // std::cout << k << std::endl;
     f(k);
     HPP_DISPLAY_LAST_TIMECOUNTER(testCounter2);
@@ -73,4 +70,4 @@ int run_test ()
   return 0;
 }
 
-GENERATE_TEST ()
+GENERATE_TEST()

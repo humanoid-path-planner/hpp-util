@@ -25,60 +25,46 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 // DAMAGE.
 
-
 #ifndef TESTS_COMMON_HH
-# define TESTS_COMMON_HH
-# include <stdexcept>
-# include <iostream>
-# include "config.h"
+#define TESTS_COMMON_HH
+#include <iostream>
+#include <stdexcept>
+
+#include "config.h"
 
 static constexpr int TEST_FAILED = 10;
 static constexpr int TEST_SUCCEED = 0;
 
-# define GENERATE_TEST()                                \
-  int                                                   \
-  main (int argc, char** argv)                          \
-  {                                                     \
-    if (argc == 2                                       \
-        && std::string (argv[1]) == "--version")        \
-      {                                                 \
-        std::cout << PACKAGE_STRING << std::endl;       \
-        return 0;                                       \
-      }                                                 \
-                                                        \
-    int status = 0;                                     \
-    try                                                 \
-      {                                                 \
-        status = run_test ();                           \
-      }                                                 \
-    catch (std::runtime_error& e)                       \
-      {                                                 \
-        std::cerr << e.what () << std::endl;            \
-        return 1;                                       \
-      }                                                 \
-    catch (...)                                         \
-      {                                                 \
-        std::cerr << "Unexpected error" << std::endl;   \
-        return 2;                                       \
-      }                                                 \
-    return status;                                      \
+#define GENERATE_TEST()                                     \
+  int main(int argc, char** argv) {                         \
+    if (argc == 2 && std::string(argv[1]) == "--version") { \
+      std::cout << PACKAGE_STRING << std::endl;             \
+      return 0;                                             \
+    }                                                       \
+                                                            \
+    int status = 0;                                         \
+    try {                                                   \
+      status = run_test();                                  \
+    } catch (std::runtime_error & e) {                      \
+      std::cerr << e.what() << std::endl;                   \
+      return 1;                                             \
+    } catch (...) {                                         \
+      std::cerr << "Unexpected error" << std::endl;         \
+      return 2;                                             \
+    }                                                       \
+    return status;                                          \
   }
 
-#define CHECK_FAILURE(EXCEPTION, CMD)           \
-  {                                             \
-    bool failed = true;                         \
-    try                                         \
-      {                                         \
-        CMD;                                    \
-      }                                         \
-    catch (EXCEPTION&)                          \
-      {                                         \
-        failed = false;                         \
-      }                                         \
-    catch (...)                                 \
-      {}                                        \
-    if (failed)                                 \
-      return TEST_FAILED;                       \
+#define CHECK_FAILURE(EXCEPTION, CMD) \
+  {                                   \
+    bool failed = true;               \
+    try {                             \
+      CMD;                            \
+    } catch (EXCEPTION&) {            \
+      failed = false;                 \
+    } catch (...) {                   \
+    }                                 \
+    if (failed) return TEST_FAILED;   \
   }
 
-#endif //! TESTS_COMMON_HH
+#endif  //! TESTS_COMMON_HH
