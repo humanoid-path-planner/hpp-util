@@ -32,8 +32,8 @@
 // See the COPYING file for more information.
 
 #ifndef HPP_UTIL_HH
-# define HPP_UTIL_HH
-# include <hpp/util/debug.hh>
-# include <hpp/util/indent.hh>
-# include <hpp/util/timer.hh>
-#endif //! HPP_UTIL_HH
+#define HPP_UTIL_HH
+#include <hpp/util/debug.hh>
+#include <hpp/util/indent.hh>
+#include <hpp/util/timer.hh>
+#endif  //! HPP_UTIL_HH

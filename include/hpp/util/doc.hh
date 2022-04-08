@@ -53,9 +53,8 @@
 
    \defgroup hpp_util_exceptions Macros for \c std::exception
 
-   It eases throwing exceptions built from string stream. You can use equivalently
-   \code
-     HPP_THROW(std::runtime_error, "message" << variable);
+   It eases throwing exceptions built from string stream. You can use
+   equivalently \code HPP_THROW(std::runtime_error, "message" << variable);
    \endcode
    or
    \code
@@ -63,18 +62,21 @@
    \endcode
    or
    \code
-     throw ::hpp::ExceptionFactory<std::runtime_error>() << "message" << variable << ::hpp::ThrowException();
-   \endcode
+     throw ::hpp::ExceptionFactory<std::runtime_error>() << "message" <<
+   variable << ::hpp::ThrowException(); \endcode
 
    \page hpp_util_serialization Serialization
 
-   Serialization of a class hierarchy can be done as follows. The class hierarchy is:
+   Serialization of a class hierarchy can be done as follows. The class
+   hierarchy is:
    - AB inherits from A
-   - ABC inherits from AB (which inherits from A), thus there cannot be at the same time ABC and DBC.
+   - ABC inherits from AB (which inherits from A), thus there cannot be at the
+   same time ABC and DBC.
 
    In the header file,
    - Use one of the \ref HPP_SERIALIZABLE macros.
-   - Except for the base class of the hierarchy (that is A), call \c BOOST_CLASS_EXPORT_KEY(AB)
+   - Except for the base class of the hierarchy (that is A), call \c
+   BOOST_CLASS_EXPORT_KEY(AB)
 
    In the definition file,
    - implement a function like
@@ -88,10 +90,12 @@
          // ...
        }
 
-       HPP_SERIALIZATION_IMPLEMENT(AB); // Or the implement macro corresponding the called declaration macro.
-     \endcode
-   - Except for the base class of the hierarchy (that is A), call \c BOOST_CLASS_EXPORT_IMPLEMENT(AB)
+       HPP_SERIALIZATION_IMPLEMENT(AB); // Or the implement macro corresponding
+   the called declaration macro. \endcode
+   - Except for the base class of the hierarchy (that is A), call \c
+   BOOST_CLASS_EXPORT_IMPLEMENT(AB)
 
-   If you know a class will not have any serializable child (i.e. AB exists but there is no no ABC), then
-   you can remove \c BOOST_CLASS_EXPORT_KEY(AB) and replace \c BOOST_CLASS_EXPORT_IMPLEMENT(AB) by \c BOOST_CLASS_EXPORT(AB)
+   If you know a class will not have any serializable child (i.e. AB exists but
+   there is no no ABC), then you can remove \c BOOST_CLASS_EXPORT_KEY(AB) and
+   replace \c BOOST_CLASS_EXPORT_IMPLEMENT(AB) by \c BOOST_CLASS_EXPORT(AB)
 */

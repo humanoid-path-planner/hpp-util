@@ -27,58 +27,51 @@
 // DAMAGE.
 
 #ifndef HPP_UTIL_FACTORIES_SEQUENCE_HH
-# define HPP_UTIL_FACTORIES_SEQUENCE_HH
+#define HPP_UTIL_FACTORIES_SEQUENCE_HH
 
-# include "hpp/util/parser.hh"
+#include <vector>
 
-# include <vector>
+#include "hpp/util/parser.hh"
 
 namespace hpp {
-  namespace util {
-    namespace parser {
-      /// \addtogroup factories
-      /// \{
+namespace util {
+namespace parser {
+/// \addtogroup factories
+/// \{
 
-      /// \brief  Factory parsing sequence of values.
-      /// \tparam ValueType one of (bool, int, unsigned int, double, float)
-      ///
-      /// A std::vector is built from a sequence of values separeted by
-      /// white spaces.
-      template <typename ValueType>
-      class SequenceFactory : public ObjectFactory {
-        public:
-          typedef std::vector <ValueType> OutType;
-          SequenceFactory (ObjectFactory* parent, const XMLElement* element, const unsigned int nbValue = 0) :
-            ObjectFactory (parent, element), size_ (nbValue)
-        {}
+/// \brief  Factory parsing sequence of values.
+/// \tparam ValueType one of (bool, int, unsigned int, double, float)
+///
+/// A std::vector is built from a sequence of values separeted by
+/// white spaces.
+template <typename ValueType>
+class SequenceFactory : public ObjectFactory {
+ public:
+  typedef std::vector<ValueType> OutType;
+  SequenceFactory(ObjectFactory* parent, const XMLElement* element,
+                  const unsigned int nbValue = 0)
+      : ObjectFactory(parent, element), size_(nbValue) {}
 
-          virtual void addTextChild (const XMLText* text);
+  virtual void addTextChild(const XMLText* text);
 
-          const OutType& values () const
-          {
-            return values_;
-          }
+  const OutType& values() const { return values_; }
 
-          SequenceFactory (const std::string& tagName, ObjectFactory* parent = NULL)
-            : ObjectFactory (tagName, parent)
-          {}
+  SequenceFactory(const std::string& tagName, ObjectFactory* parent = NULL)
+      : ObjectFactory(tagName, parent) {}
 
-          void values (const OutType& v)
-          {
-            values_ = v;
-          }
+  void values(const OutType& v) { values_ = v; }
 
-        protected:
-          virtual void impl_write (XMLElement* element) const;
+ protected:
+  virtual void impl_write(XMLElement* element) const;
 
-        private:
-          std::vector <ValueType> values_;
-          unsigned int size_;
-      };
+ private:
+  std::vector<ValueType> values_;
+  unsigned int size_;
+};
 
-      /// \}
-    } // namespace parser
-  } // namespace manipulation
-} // namespace hpp
+/// \}
+}  // namespace parser
+}  // namespace util
+}  // namespace hpp
 
-#endif // HPP_UTIL_FACTORIES_SEQUENCE_HH
+#endif  // HPP_UTIL_FACTORIES_SEQUENCE_HH

@@ -25,52 +25,43 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 // DAMAGE.
 
-#include <hpp/util/exception-factory.hh>
-
-#include "config.h"
-
 #include <cassert>
-#include <stdexcept>
+#include <hpp/util/exception-factory.hh>
 #include <iostream>
+#include <stdexcept>
 
 #include "common.hh"
+#include "config.h"
 
-int run_test ();
+int run_test();
 
-int run_test ()
-{
-  try
-    {
-      throw ::hpp::ExceptionFactory<std::runtime_error>() << "manually built std::runtime_error" << ::hpp::ThrowException();
-      assert (0);
-    }
-  catch (const std::exception& exception)
-    {
-      std::cout << "Caught " << exception.what() << std::endl;
-    }
+int run_test() {
+  try {
+    throw ::hpp::ExceptionFactory<std::runtime_error>()
+        << "manually built std::runtime_error" << ::hpp::ThrowException();
+    assert(0);
+  } catch (const std::exception& exception) {
+    std::cout << "Caught " << exception.what() << std::endl;
+  }
 
-  try
-    {
-      HPP_THROW(std::runtime_error,"std::runtime_error");
-      assert (0);
-    }
-  catch (const std::exception& exception)
-    {
-      std::cout << "Caught " << exception.what() << std::endl;
-    }
+  try {
+    HPP_THROW(std::runtime_error, "std::runtime_error");
+    assert(0);
+  } catch (const std::exception& exception) {
+    std::cout << "Caught " << exception.what() << std::endl;
+  }
 
-  try
-    {
-      double d = 12; std::string foo = "foo";
-      HPP_THROW_WITH_LINEINFO (std::runtime_error,
-          "std::runtime_error using operator<< " << foo << " " << d);
-      assert (0);
-    }
-  catch (const std::exception& exception)
-    {
-      std::cout << "Caught " << exception.what() << std::endl;
-    }
+  try {
+    double d = 12;
+    std::string foo = "foo";
+    HPP_THROW_WITH_LINEINFO(
+        std::runtime_error,
+        "std::runtime_error using operator<< " << foo << " " << d);
+    assert(0);
+  } catch (const std::exception& exception) {
+    std::cout << "Caught " << exception.what() << std::endl;
+  }
   return 0;
 }
 
-GENERATE_TEST ()
+GENERATE_TEST()

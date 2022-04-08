@@ -26,28 +26,28 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 // DAMAGE.
 
-#include <iostream>
 #include <hpp/util/string.hh>
+#include <iostream>
 
 #include "common.hh"
 
 using namespace hpp::util;
 
-int run_test ()
-{
+int run_test() {
   std::string str("avq  vfb\tcfdsqf\ndfqs;");
 
   string_split(str.begin(), str.end(), " \t\n",
-      [](decltype(str.begin()) begin, decltype(str.begin()) end) {
-        std::cout << std::string(&(*begin), std::distance(begin, end)) << "\n";
-        return false;
-      });
+               [](decltype(str.begin()) begin, decltype(str.begin()) end) {
+                 std::cout << std::string(&(*begin), std::distance(begin, end))
+                           << "\n";
+                 return false;
+               });
 
-  if ( iequal("abd", "AB"))  return TEST_FAILED;
+  if (iequal("abd", "AB")) return TEST_FAILED;
   if (!iequal("abd", "ABd")) return TEST_FAILED;
-  if ( iequal("abd", "Acd")) return TEST_FAILED;
+  if (iequal("abd", "Acd")) return TEST_FAILED;
 
   return TEST_SUCCEED;
 }
 
-GENERATE_TEST ()
+GENERATE_TEST()
