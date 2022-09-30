@@ -60,7 +60,11 @@ const Timer::time_point& Timer::getStop() const { return end_; }
 double Timer::duration() const { return duration_type(end_ - start_).count(); }
 
 std::ostream& Timer::print(std::ostream& o) const {
-  auto time = clock_type::to_time_t(start_);
+  auto time = system_clock::to_time_t(
+      system_clock::now()
+      + duration_cast<system_clock::duration>(start_ - clock_type::now())
+    );
+
   return o << "timer started at "
            << std::put_time(std::localtime(&time), "%F %T")
            << " and elapsed time "
