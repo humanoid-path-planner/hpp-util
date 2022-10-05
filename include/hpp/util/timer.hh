@@ -37,7 +37,7 @@ namespace hpp {
 namespace debug {
 class HPP_UTIL_DLLAPI Timer {
  public:
-  typedef std::chrono::high_resolution_clock clock_type;
+  typedef std::chrono::steady_clock clock_type;
   typedef clock_type::time_point time_point;
   typedef std::chrono::duration<double> duration_type;
 
@@ -101,7 +101,7 @@ class HPP_UTIL_DLLAPI TimeCounter {
     TimeCounter& tc;
   };
 
-  typedef std::chrono::high_resolution_clock clock_type;
+  typedef std::chrono::system_clock clock_type;
   typedef clock_type::time_point time_point;
   typedef std::chrono::duration<double> duration_type;
 
