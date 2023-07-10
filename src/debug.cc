@@ -28,8 +28,10 @@
 #include "hpp/util/debug.hh"
 
 #include <boost/filesystem.hpp>  // Need C++ 17 to remove this.
+#include <chrono>
 #include <cstdlib>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 
@@ -113,7 +115,17 @@ Output::~Output() {}
 
 std::ostream& Output::writePrefix(std::ostream& stream, const Channel& channel,
                                   char const* file, int line, char const*) {
-  stream << channel.label() << ':' << file << ':' << line << ": ";
+  using std::chrono::system_clock;
+  system_clock::time_point now_point = system_clock::now();
+  const std::time_t now = system_clock::to_time_t(now_point);
+  const auto millis{std::chrono::duration_cast<std::chrono::milliseconds>(
+                        now_point.time_since_epoch())
+                        .count() %
+                    1000};
+
+  stream << std::put_time(std::localtime(&now), "[%F %T") << "." << std::setw(3)
+         << std::setfill('0') << millis << ']' << channel.label() << ':' << file
+         << ':' << line << ": ";
   return stream;
 }
 
