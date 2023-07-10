@@ -55,6 +55,10 @@ namespace debug {
 /// directory.
 static const char* ENV_LOGGINGDIR = "HPP_LOGGINGDIR";
 
+static int verbosity = static_cast<int>(verbosityLevel::error);
+
+static int benchmarkEnabled = false;
+
 namespace {
 HPP_UTIL_LOCAL void makeDirectory(const std::string& filename) {
   using namespace boost::filesystem;
@@ -94,6 +98,14 @@ std::string getFilename(const std::string& filename,
   makeDirectory(res);
   return res;
 }
+
+int getVerbosityLevel() { return verbosity; }
+
+void setVerbosityLevel(int level) { verbosity = level; }
+
+bool isBenchmarkEnabled() { return benchmarkEnabled; }
+
+void enableBenchmark(bool enable) { benchmarkEnabled = enable; }
 
 Output::Output() {}
 
