@@ -89,15 +89,14 @@ HPP_UTIL_DLLAPI std::string getPrefix(const std::string& packageName);
 HPP_UTIL_DLLAPI std::string getFilename(const std::string& filename,
                                         const std::string& packageName);
 
-
 namespace verbosityLevel {
-  constexpr int none = 0;
-  constexpr int error = 10;
-  constexpr int warning = 20;
-  constexpr int notice = 30;
-  constexpr int info = 40;
-  constexpr int benchmark = -1;
-}
+constexpr int none = 0;
+constexpr int error = 10;
+constexpr int warning = 20;
+constexpr int notice = 30;
+constexpr int info = 40;
+constexpr int benchmark = -1;
+}  // namespace verbosityLevel
 
 /// \brief Get the verbosity level.
 HPP_UTIL_DLLAPI int getVerbosityLevel();
@@ -110,8 +109,7 @@ HPP_UTIL_DLLAPI bool isBenchmarkEnabled();
 HPP_UTIL_DLLAPI void enableBenchmark(bool enable);
 
 inline bool isChannelEnabled(int channel) {
-  if (channel == verbosityLevel::benchmark)
-    return isBenchmarkEnabled();
+  if (channel == verbosityLevel::benchmark) return isBenchmarkEnabled();
   return getVerbosityLevel() >= channel;
 }
 
