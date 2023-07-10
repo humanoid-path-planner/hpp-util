@@ -89,6 +89,32 @@ HPP_UTIL_DLLAPI std::string getPrefix(const std::string& packageName);
 HPP_UTIL_DLLAPI std::string getFilename(const std::string& filename,
                                         const std::string& packageName);
 
+
+namespace verbosityLevel {
+  constexpr int none = 0;
+  constexpr int error = 10;
+  constexpr int warning = 20;
+  constexpr int notice = 30;
+  constexpr int info = 40;
+  constexpr int benchmark = -1;
+}
+
+/// \brief Get the verbosity level.
+HPP_UTIL_DLLAPI int getVerbosityLevel();
+
+/// \brief Set the verbosity level.
+HPP_UTIL_DLLAPI void setVerbosityLevel(int level);
+
+HPP_UTIL_DLLAPI bool isBenchmarkEnabled();
+
+HPP_UTIL_DLLAPI void enableBenchmark(bool enable);
+
+inline bool isChannelEnabled(int channel) {
+  if (channel == verbosityLevel::benchmark)
+    return isBenchmarkEnabled();
+  return getVerbosityLevel() >= channel;
+}
+
 /// \brief Debugging output.
 ///
 /// Represents a debugging output, i.e. an output stream
@@ -237,13 +263,15 @@ extern HPP_UTIL_DLLAPI Logging logging;
 /// \param channel one of \em error, \em warning, \em notice, \em info or \em
 /// benchmark. \param data a statement that can be \c << to a \c
 /// std::stringstream.
-#define hppDout(channel, data)                                            \
-  do {                                                                    \
-    using namespace hpp;                                                  \
-    using namespace ::hpp::debug;                                         \
-    std::stringstream __ss;                                               \
-    __ss << data << iendl;                                                \
-    logging.channel.write(__FILE__, __LINE__, __PRETTY_FUNCTION__, __ss); \
+#define hppDout(channel, data)                                              \
+  do {                                                                      \
+    using namespace hpp;                                                    \
+    using namespace ::hpp::debug;                                           \
+    if (isChannelEnabled(verbosityLevel::channel)) {                        \
+      std::stringstream __ss;                                               \
+      __ss << data << iendl;                                                \
+      logging.channel.write(__FILE__, __LINE__, __PRETTY_FUNCTION__, __ss); \
+    }                                                                       \
   } while (0)
 
 /// \brief Write \c data to \c channel and exit the program.
