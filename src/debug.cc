@@ -56,6 +56,7 @@ namespace debug {
 /// \brief Environment variable used to change the logging
 /// directory.
 static const char* ENV_LOGGINGDIR = "HPP_LOGGINGDIR";
+static const char* ENV_LOGGINGLEVEL = "HPP_LOGGINGLEVEL";
 
 static int verbosity = static_cast<int>(verbosityLevel::error);
 
@@ -73,6 +74,29 @@ HPP_UTIL_LOCAL void makeDirectory(const std::string& filename) {
 
   boost::filesystem::create_directories(dirname);
 }
+
+struct SetVerbosityLevelFromEnvVar {
+  SetVerbosityLevelFromEnvVar() {
+    const char* levelStr = getenv(ENV_LOGGINGLEVEL);
+    if (levelStr) {
+      try {
+        int level = std::stoi(levelStr);
+        if (level >= 0) {
+          setVerbosityLevel(level);
+        } else {
+          std::cerr << ENV_LOGGINGLEVEL << " env var should not be negative."
+                    << std::endl;
+        }
+      } catch (std::invalid_argument& e) {
+        std::cerr << "Could not interpret " << ENV_LOGGINGLEVEL
+                  << " env var: " << e.what() << std::endl;
+      } catch (std::out_of_range& e) {
+        std::cerr << "Could not interpret " << ENV_LOGGINGLEVEL
+                  << " env var: " << e.what() << std::endl;
+      }
+    }
+  }
+};
 }  // namespace
 
 std::string getPrefix(const std::string& packageName) {
@@ -247,5 +271,7 @@ Logging::~Logging() {}
 namespace hpp {
 namespace debug {
 HPP_UTIL_DLLAPI Logging logging;
+
+HPP_UTIL_DLLAPI SetVerbosityLevelFromEnvVar setVerbosityLevelFromEnvVar;
 }  // end of namespace debug
 }  // end of namespace hpp
