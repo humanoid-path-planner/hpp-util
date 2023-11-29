@@ -37,6 +37,14 @@ namespace hpp {
 namespace util {
 namespace parser {
 namespace {
+
+// copy/paste from tinyxml2.cpp
+#if defined(_MSC_VER) && (_MSC_VER >= 1400) && (!defined WINCE)
+#define TIXML_SSCANF sscanf_s
+#else
+#define TIXML_SSCANF sscanf
+#endif
+
 struct StringIsEmpty : public std::unary_function<std::string, bool> {
   bool operator()(std::string s) const { return s.empty(); }
 };
@@ -128,7 +136,8 @@ void SequenceFactory<ValueType>::impl_write(XMLElement* element) const {
        it != values_.end(); ++it) {
     ss << *it << " ";
   }
-  element->InsertEndChild(XMLText(ss.str()));
+  XMLElement* el = element->GetDocument()->NewElement(ss.str().c_str());
+  element->InsertEndChild(el);
 }
 
 template class SequenceFactory<bool>;

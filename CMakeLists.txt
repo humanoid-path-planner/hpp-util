@@ -39,11 +39,8 @@ compute_project_args(PROJECT_ARGS LANGUAGES CXX C)
 project(${PROJECT_NAME} ${PROJECT_ARGS})
 check_minimal_cxx_standard(14 REQUIRED)
 
-# Search for Boost.
 add_project_dependency(Boost REQUIRED COMPONENTS filesystem serialization)
-
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/find-external/TinyXML)
-find_package(TinyXML REQUIRED)
+add_project_dependency(TinyXML2 REQUIRED)
 
 set(${PROJECT_NAME}_HEADERS
     include/hpp/util/assertion.hh
@@ -73,10 +70,9 @@ set(${PROJECT_NAME}_SOURCES
 
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES}
                                    ${${PROJECT_NAME}_HEADERS})
-target_include_directories(${PROJECT_NAME} PRIVATE ${TinyXML_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PUBLIC $<INSTALL_INTERFACE:include>)
 target_link_libraries(
-  ${PROJECT_NAME} PUBLIC ${TinyXML_LIBRARY} Boost::filesystem
+  ${PROJECT_NAME} PUBLIC tinyxml2::tinyxml2 Boost::filesystem
                          Boost::serialization)
 
 # Check for unistd.h presence.
