@@ -121,7 +121,7 @@ void SequenceFactory<ValueType>::addTextChild(const XMLText* text) {
     throw std::invalid_argument("Wrong sequence size");
 
   ValueType v;
-  for (const std::string s : values) {
+  for (const std::string& s : values) {
     if (!cast<ValueType>(s, &v)) {
       hppDout(error, "could not parse value " << s);
     }
