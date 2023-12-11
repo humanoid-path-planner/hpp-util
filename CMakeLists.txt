@@ -39,8 +39,10 @@ compute_project_args(PROJECT_ARGS LANGUAGES CXX C)
 project(${PROJECT_NAME} ${PROJECT_ARGS})
 check_minimal_cxx_standard(14 REQUIRED)
 
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/find-external/TinyXML)
+
 add_project_dependency(Boost REQUIRED COMPONENTS filesystem serialization)
-add_project_dependency(TinyXML2 REQUIRED)
+add_project_dependency(TinyXML2 REQUIRED FIND_EXTERNAL TinyXML)
 
 set(${PROJECT_NAME}_HEADERS
     include/hpp/util/assertion.hh
