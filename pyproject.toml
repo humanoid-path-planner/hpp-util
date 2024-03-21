@@ -1,2 +1,23 @@
+[build-system]
+build-backend = "cmeel.build"
+requires = [
+  "cmeel-boost[build] ~= 1.83.0",
+  "cmeel-tinyxml[build]",
+  "cmeel[build]"
+]
+
+[project]
+dependencies = [
+  "cmeel-boost ~= 1.83.0",
+  "cmeel-tinyxml"
+]
+description = "Debugging tools for the HPP project."
+license = "BSD-2-Clause"
+name = "hpp-util"
+version = "5.0.0"
+
 [tool.isort]
 profile = "black"
+
+[tool.tomlsort]
+all = true
