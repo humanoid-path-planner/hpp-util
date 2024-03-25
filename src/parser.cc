@@ -58,7 +58,7 @@ void Parser::parseFile(const std::string& filename) {
 
 bool Parser::checkError() const {
   if (doc_.Error()) {
-    hppDout(error, doc_.ErrorDesc());
+    hppDout(error, doc_.ErrorStr());
     return true;
   }
   return false;
