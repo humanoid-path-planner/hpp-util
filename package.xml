@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
  <package format='2'>
  <name>hpp-util</name>
- <version>4.15.1</version>
+ <version>5.0.0</version>
  <description>Debugging tools for the HPP project. </description>
 
  <maintainer email='hpp@laas.fr'>Joseph Mirabel</maintainer>
