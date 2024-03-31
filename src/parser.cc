@@ -36,7 +36,7 @@ namespace hpp {
 namespace util {
 namespace parser {
 Parser::Parser(FactoryType defaultFactory)
-    : root_(NULL), defaultFactory_(defaultFactory) {}
+    : doc_(), root_(NULL), defaultFactory_(defaultFactory) {}
 
 Parser::~Parser() {
   for (ObjectFactoryList::iterator it = objectFactories_.begin();
@@ -46,21 +46,19 @@ Parser::~Parser() {
 }
 
 void Parser::parse(const char* xmlString) {
-  doc_ = XMLDocument("document_from_string.xml");
   doc_.Parse(xmlString);
 
   parse();
 }
 
 void Parser::parseFile(const std::string& filename) {
-  doc_ = XMLDocument(filename);
-  doc_.LoadFile();
+  doc_.LoadFile(filename.c_str());
   parse();
 }
 
 bool Parser::checkError() const {
   if (doc_.Error()) {
-    hppDout(error, doc_.ErrorDesc());
+    hppDout(error, doc_.ErrorStr());
     return true;
   }
   return false;
@@ -89,8 +87,7 @@ void Parser::parseElement(const XMLElement* element, ObjectFactory* parent) {
 
   ObjectFactory* o = NULL;
   /// Look for this element in the map
-  ObjectFactoryMap::const_iterator it =
-      objFactoryMap_.find(element->ValueStr());
+  ObjectFactoryMap::const_iterator it = objFactoryMap_.find(element->Value());
   if (it != objFactoryMap_.end())
     o = it->second(parent, element);
   else {
@@ -137,7 +134,7 @@ std::ostream& operator<<(std::ostream& os, const ObjectFactory& o) {
 ObjectFactory::ObjectFactory(ObjectFactory* parent, const XMLElement* element)
     : parent_(parent), root_(NULL), element_(element), id_(-1) {
   if (element_ != NULL)
-    tagName_ = element_->ValueStr();
+    tagName_ = element_->Value();
   else
     tagName_ = "unamed_tag";
   if (parent_ == NULL) {
@@ -178,16 +175,16 @@ void ObjectFactory::addAttribute(const std::string& name,
 
 /// Get a new XMLElement from the content of this factory
 XMLNode* ObjectFactory::write(XMLNode* parent) const {
-  XMLElement el(tagName());
+  XMLElement* el = parent->GetDocument()->NewElement(tagName().c_str());
   for (AttributeMap::const_iterator it = attrMap_.begin(); it != attrMap_.end();
        ++it)
-    el.SetAttribute(it->first, it->second);
+    el->SetAttribute(it->first.c_str(), it->second.c_str());
   for (ChildrenMap::const_iterator it = children_.begin();
        it != children_.end(); ++it)
     for (ObjectFactoryList::const_iterator of = it->second.begin();
          of != it->second.end(); ++of)
-      (*of)->write(&el);
-  impl_write(&el);
+      (*of)->write(el);
+  impl_write(el);
   return parent->InsertEndChild(el);
 }
 
@@ -247,16 +244,16 @@ std::ostream& ObjectFactory::print(std::ostream& os) const {
 void ObjectFactory::setAttribute(const XMLAttribute* attr) {
   std::string n = std::string(attr->Name());
   if (n == "name")
-    name(attr->ValueStr());
+    name(attr->Value());
   else if (n == "id") {
     int v;
-    if (attr->QueryIntValue(&v) != TIXML_SUCCESS) {
+    if (attr->QueryIntValue(&v) != tinyxml2::XML_SUCCESS) {
       hppDout(error, "Attribute ID " << attr->Value() << " is incorrect.");
     } else {
       id_ = (int)v;
     }
   }
-  attrMap_[n] = attr->ValueStr();
+  attrMap_[n] = attr->Value();
   impl_setAttribute(attr);
 }
 

@@ -23,14 +23,45 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.10)
 
 set(PROJECT_NAME hpp-util)
 set(PROJECT_DESCRIPTION "Debugging tools for the HPP project.")
 set(PROJECT_URL "http://github.com/humanoid-path-planner/hpp-util")
 
-include(cmake/hpp.cmake)
-include(cmake/boost.cmake)
+# Check if the submodule cmake have been initialized
+set(JRL_CMAKE_MODULES "${CMAKE_CURRENT_LIST_DIR}/cmake")
+if(EXISTS "${JRL_CMAKE_MODULES}/base.cmake")
+  message(STATUS "JRL cmakemodules found in 'cmake/' git submodule")
+else()
+  find_package(jrl-cmakemodules QUIET CONFIG)
+  if(jrl-cmakemodules_FOUND)
+    get_property(
+      JRL_CMAKE_MODULES
+      TARGET jrl-cmakemodules::jrl-cmakemodules
+      PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
+    message(STATUS "JRL cmakemodules found on system at ${JRL_CMAKE_MODULES}")
+  elseif(${CMAKE_VERSION} VERSION_LESS "3.14.0")
+    message(
+      FATAL_ERROR
+        "\nCan't find jrl-cmakemodules. Please either:\n"
+        "  - use git submodule: 'git submodule update --init'\n"
+        "  - or install https://github.com/jrl-umi3218/jrl-cmakemodules\n"
+        "  - or upgrade your CMake version to >= 3.14 to allow automatic fetching\n"
+    )
+  else()
+    message(STATUS "JRL cmakemodules not found. Let's fetch it.")
+    include(FetchContent)
+    FetchContent_Declare(
+      "jrl-cmakemodules"
+      GIT_REPOSITORY "https://github.com/jrl-umi3218/jrl-cmakemodules.git")
+    FetchContent_MakeAvailable("jrl-cmakemodules")
+    FetchContent_GetProperties("jrl-cmakemodules" SOURCE_DIR JRL_CMAKE_MODULES)
+  endif()
+endif()
+
+include("${JRL_CMAKE_MODULES}/hpp.cmake")
+include("${JRL_CMAKE_MODULES}/boost.cmake")
 
 set(CXX_DISABLE_WERROR 1)
 set(PROJECT_USE_CMAKE_EXPORT TRUE)
@@ -39,11 +70,10 @@ compute_project_args(PROJECT_ARGS LANGUAGES CXX C)
 project(${PROJECT_NAME} ${PROJECT_ARGS})
 check_minimal_cxx_standard(14 REQUIRED)
 
-# Search for Boost.
-add_project_dependency(Boost REQUIRED COMPONENTS filesystem serialization)
-
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/find-external/TinyXML)
-find_package(TinyXML REQUIRED)
+
+add_project_dependency(Boost REQUIRED COMPONENTS filesystem serialization)
+add_project_dependency(TinyXML2 REQUIRED FIND_EXTERNAL TinyXML)
 
 set(${PROJECT_NAME}_HEADERS
     include/hpp/util/assertion.hh
@@ -73,10 +103,10 @@ set(${PROJECT_NAME}_SOURCES
 
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES}
                                    ${${PROJECT_NAME}_HEADERS})
-target_include_directories(${PROJECT_NAME} PRIVATE ${TinyXML_INCLUDE_DIR})
-target_include_directories(${PROJECT_NAME} PUBLIC $<INSTALL_INTERFACE:include>)
+target_include_directories(
+  ${PROJECT_NAME} PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 target_link_libraries(
-  ${PROJECT_NAME} PUBLIC ${TinyXML_LIBRARY} Boost::filesystem
+  ${PROJECT_NAME} PUBLIC tinyxml2::tinyxml2 Boost::filesystem
                          Boost::serialization)
 
 # Check for unistd.h presence.

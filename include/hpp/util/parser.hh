@@ -29,7 +29,7 @@
 #ifndef HPP_MANIPULATION_PARSER_HH
 #define HPP_MANIPULATION_PARSER_HH
 
-#include <tinyxml.h>
+#include <tinyxml2.h>
 
 #include <functional>
 #include <iostream>
@@ -40,15 +40,15 @@
 namespace hpp {
 namespace util {
 namespace parser {
-typedef TiXmlElement XMLElement;
-typedef TiXmlDocument XMLDocument;
-typedef TiXmlDeclaration XMLDeclaration;
-typedef TiXmlAttribute XMLAttribute;
-typedef TiXmlNode XMLNode;
-typedef TiXmlText XMLText;
-typedef TiXmlComment XMLComment;
+typedef tinyxml2::XMLElement XMLElement;
+typedef tinyxml2::XMLDocument XMLDocument;
+typedef tinyxml2::XMLDeclaration XMLDeclaration;
+typedef tinyxml2::XMLAttribute XMLAttribute;
+typedef tinyxml2::XMLNode XMLNode;
+typedef tinyxml2::XMLText XMLText;
+typedef tinyxml2::XMLComment XMLComment;
 
-typedef TiXmlPrinter XMLPrinter;
+typedef tinyxml2::XMLPrinter XMLPrinter;
 
 class RootFactory;
 
