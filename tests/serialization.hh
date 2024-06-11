@@ -30,7 +30,7 @@
 
 class Foo {
  public:
-  Foo(int i) : i_(i){};
+  Foo(int i) : i_(i) {};
   int i_;
 
  private:
@@ -42,7 +42,7 @@ BOOST_CLASS_EXPORT_KEY(Foo)
 
 class Bar {
  public:
-  Bar(int i) : i_(i){};
+  Bar(int i) : i_(i) {};
   int i_;
   Foo* f_;
 
@@ -55,7 +55,7 @@ BOOST_CLASS_EXPORT_KEY(Bar)
 
 class FooFree {
  public:
-  FooFree(int i) : i_(i){};
+  FooFree(int i) : i_(i) {};
   int i_;
 
   FooFree() {}
@@ -65,7 +65,7 @@ HPP_SERIALIZABLE_FREE(FooFree)
 
 class BarFree {
  public:
-  BarFree(int i) : i_(i){};
+  BarFree(int i) : i_(i) {};
   int i_;
 
   BarFree() {}
