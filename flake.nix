@@ -1,5 +1,5 @@
 {
-  description = "Description for the project";
+  description = "Debugging tools for the HPP project";
 
   nixConfig = {
     extra-substituters = [ "https://gepetto.cachix.org" ];
