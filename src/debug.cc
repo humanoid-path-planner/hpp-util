@@ -67,10 +67,7 @@ HPP_UTIL_LOCAL void makeDirectory(const std::string& filename) {
   using namespace boost::filesystem;
   path pathname(filename);
 
-  // FIXME: Boost 1.34.1 does not support the non-obsolete
-  // equivalent of branch_path, parent_path, so bear with
-  // it for now.
-  std::string dirname = pathname.branch_path().string();
+  std::string dirname = pathname.parent_path().string();
 
   boost::filesystem::create_directories(dirname);
 }
