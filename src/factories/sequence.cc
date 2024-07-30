@@ -45,7 +45,7 @@ namespace {
 #define TIXML_SSCANF sscanf
 #endif
 
-struct StringIsEmpty : public std::unary_function<std::string, bool> {
+struct StringIsEmpty {
   bool operator()(std::string s) const { return s.empty(); }
 };
 
