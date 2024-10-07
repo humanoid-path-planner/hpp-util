@@ -25,6 +25,8 @@
           packages = {
             default = self'.packages.hpp-util;
             hpp-util = pkgs.hpp-util.overrideAttrs (_: {
+              # TODO: remove this patch override after next release
+              patches = [];
               src = pkgs.lib.fileset.toSource {
                 root = ./.;
                 fileset = pkgs.lib.fileset.unions [
