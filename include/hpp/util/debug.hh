@@ -246,7 +246,9 @@ extern HPP_UTIL_DLLAPI Logging logging;
 #define hppDebug(statement)       \
   do {                            \
     using namespace ::hpp::debug; \
-    { statement; }                \
+    {                             \
+      statement;                  \
+    }                             \
   } while (0)
 
 /// \brief Enable \c statement when HPP_DEBUG is defined.
