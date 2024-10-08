@@ -29,6 +29,7 @@
 #
 macro(DEFINE_TEST NAME)
   add_unit_test(${NAME} ${NAME}.cc)
+  target_include_directories(${NAME} PRIVATE ${Boost_INCLUDE_DIRS})
   target_link_libraries(${NAME} ${PROJECT_NAME})
 endmacro(DEFINE_TEST)
 
@@ -46,5 +47,6 @@ target_link_libraries(serialization ${PROJECT_NAME})
 set(HPP_LOGGINGDIR "${CMAKE_CURRENT_BINARY_DIR}")
 config_files(run_debug.sh)
 add_executable(debug debug.cc)
+target_include_directories(debug PRIVATE ${Boost_INCLUDE_DIRS})
 target_link_libraries(debug ${PROJECT_NAME})
 add_test(NAME debug COMMAND ${RUNTIME_OUTPUT_DIRECTORY}/run_debug.sh)
