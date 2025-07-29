@@ -2,34 +2,33 @@
   description = "Debugging tools for the HPP project";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/refs/pull/362956/head";
-    flake-parts = {
-      url = "github:hercules-ci/flake-parts";
-      inputs.nixpkgs-lib.follows = "nixpkgs";
-    };
+    gepetto.url = "github:gepetto/nix";
+    flake-parts.follows = "gepetto/flake-parts";
+    nixpkgs.follows = "gepetto/nixpkgs";
+    nix-ros-overlay.follows = "gepetto/nix-ros-overlay";
+    systems.follows = "gepetto/systems";
+    treefmt-nix.follows = "gepetto/treefmt-nix";
   };
 
   outputs =
     inputs:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "aarch64-darwin"
-        "x86_64-darwin"
-      ];
+      systems = import inputs.systems;
+      imports = [ inputs.gepetto.flakeModule ];
       perSystem =
-        { pkgs, self', ... }:
         {
-          devShells.default = pkgs.mkShell { inputsFrom = [ self'.packages.default ]; };
+          lib,
+          pkgs,
+          self',
+          ...
+        }:
+        {
           packages = {
             default = self'.packages.hpp-util;
-            hpp-util = pkgs.hpp-util.overrideAttrs (_: {
-              # TODO: remove this patch override after next release
-              patches = [];
-              src = pkgs.lib.fileset.toSource {
+            hpp-util = pkgs.hpp-util.overrideAttrs {
+              src = lib.fileset.toSource {
                 root = ./.;
-                fileset = pkgs.lib.fileset.unions [
+                fileset = lib.fileset.unions [
                   ./CMakeLists.txt
                   ./doc
                   ./include
@@ -38,7 +37,7 @@
                   ./tests
                 ];
               };
-            });
+            };
           };
         };
     };
