@@ -28,9 +28,9 @@
 # Compile a program and add it as a test.
 #
 macro(DEFINE_TEST NAME)
-  add_unit_test(${NAME} ${NAME}.cc)
-  target_include_directories(${NAME} PRIVATE ${Boost_INCLUDE_DIRS})
-  target_link_libraries(${NAME} ${PROJECT_NAME})
+    add_unit_test(${NAME} ${NAME}.cc)
+    target_include_directories(${NAME} PRIVATE ${Boost_INCLUDE_DIRS})
+    target_link_libraries(${NAME} ${PROJECT_NAME})
 endmacro(DEFINE_TEST)
 
 # Define tests.

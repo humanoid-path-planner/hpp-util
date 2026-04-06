@@ -32,24 +32,32 @@ set(PROJECT_URL "http://github.com/humanoid-path-planner/hpp-util")
 # Check if the submodule cmake have been initialized
 set(JRL_CMAKE_MODULES "${CMAKE_CURRENT_LIST_DIR}/cmake")
 if(EXISTS "${JRL_CMAKE_MODULES}/base.cmake")
-  message(STATUS "JRL cmakemodules found in 'cmake/' git submodule")
+    message(STATUS "JRL cmakemodules found in 'cmake/' git submodule")
 else()
-  find_package(jrl-cmakemodules QUIET CONFIG)
-  if(jrl-cmakemodules_FOUND)
-    get_property(
-      JRL_CMAKE_MODULES
-      TARGET jrl-cmakemodules::jrl-cmakemodules
-      PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
-    message(STATUS "JRL cmakemodules found on system at ${JRL_CMAKE_MODULES}")
-  else()
-    message(STATUS "JRL cmakemodules not found. Let's fetch it.")
-    include(FetchContent)
-    FetchContent_Declare(
-      "jrl-cmakemodules"
-      GIT_REPOSITORY "https://github.com/jrl-umi3218/jrl-cmakemodules.git")
-    FetchContent_MakeAvailable("jrl-cmakemodules")
-    FetchContent_GetProperties("jrl-cmakemodules" SOURCE_DIR JRL_CMAKE_MODULES)
-  endif()
+    find_package(jrl-cmakemodules QUIET CONFIG)
+    if(jrl-cmakemodules_FOUND)
+        get_property(
+            JRL_CMAKE_MODULES
+            TARGET jrl-cmakemodules::jrl-cmakemodules
+            PROPERTY INTERFACE_INCLUDE_DIRECTORIES
+        )
+        message(
+            STATUS
+            "JRL cmakemodules found on system at ${JRL_CMAKE_MODULES}"
+        )
+    else()
+        message(STATUS "JRL cmakemodules not found. Let's fetch it.")
+        include(FetchContent)
+        FetchContent_Declare(
+            "jrl-cmakemodules"
+            GIT_REPOSITORY "https://github.com/jrl-umi3218/jrl-cmakemodules.git"
+        )
+        FetchContent_MakeAvailable("jrl-cmakemodules")
+        FetchContent_GetProperties(
+            "jrl-cmakemodules"
+            SOURCE_DIR JRL_CMAKE_MODULES
+        )
+    endif()
 endif()
 
 include("${JRL_CMAKE_MODULES}/hpp.cmake")
@@ -82,7 +90,8 @@ set(${PROJECT_NAME}_HEADERS
     include/hpp/util/factories/sequence.hh
     include/hpp/util/serialization.hh
     include/hpp/util/serialization-fwd.hh
-    include/hpp/util/string.hh)
+    include/hpp/util/string.hh
+)
 
 set(${PROJECT_NAME}_SOURCES
     src/debug.cc
@@ -91,34 +100,41 @@ set(${PROJECT_NAME}_SOURCES
     src/timer.cc
     src/version.cc
     src/parser.cc
-    src/factories/sequence.cc)
+    src/factories/sequence.cc
+)
 
-add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES}
-                                   ${${PROJECT_NAME}_HEADERS})
+add_library(
+    ${PROJECT_NAME}
+    SHARED
+    ${${PROJECT_NAME}_SOURCES}
+    ${${PROJECT_NAME}_HEADERS}
+)
 target_include_directories(
-  ${PROJECT_NAME} PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+    ${PROJECT_NAME}
+    PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
 target_link_libraries(
-  ${PROJECT_NAME} PUBLIC tinyxml2::tinyxml2 Boost::filesystem
-                         Boost::serialization)
+    ${PROJECT_NAME}
+    PUBLIC tinyxml2::tinyxml2 Boost::filesystem Boost::serialization
+)
 
 # Check for unistd.h presence.
 include(CheckIncludeFiles)
 check_include_files(unistd.h HAVE_UNISTD_H)
 if(${HAVE_UNISTD_H})
-  target_compile_definitions(${PROJECT_NAME} PRIVATE -DHAVE_UNISTD_H)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE -DHAVE_UNISTD_H)
 endif(${HAVE_UNISTD_H})
 
 # Define logging directory location.
 target_compile_definitions(
-  ${PROJECT_NAME} PRIVATE -DHPP_LOGGINGDIR="${CMAKE_INSTALL_PREFIX}/var/log")
+    ${PROJECT_NAME}
+    PRIVATE -DHPP_LOGGINGDIR="${CMAKE_INSTALL_PREFIX}/var/log"
+)
 
 # Set shared library version.
 set_target_properties(${PROJECT_NAME} PROPERTIES SOVERSION ${PROJECT_VERSION})
 
-install(
-  TARGETS ${PROJECT_NAME}
-  EXPORT ${TARGETS_EXPORT_NAME}
-  DESTINATION lib)
+install(TARGETS ${PROJECT_NAME} EXPORT ${TARGETS_EXPORT_NAME} DESTINATION lib)
 
 add_subdirectory(tests)
 
