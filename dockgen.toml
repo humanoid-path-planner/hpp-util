@@ -1,0 +1,7 @@
+[hpp-util]
+apt_deps = ["libboost-all-dev", "libtinyxml2-dev"]
+src_deps = ["jrl-cmakemodules"]
+url = "."
+
+[jrl-cmakemodules]
+url = "github:jrl-umi3218"
