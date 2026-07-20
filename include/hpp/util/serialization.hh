@@ -209,9 +209,8 @@ class archive_ptr_holder {
     ar << make_nvp("nrequires", size);
     typedef std::pair<std::string, std::string> string_pair;
     for (auto it : ptrs_) {
-      string_pair
-        requires(it.first, it.second->classid);
-      ar << make_nvp("requires", requires);
+      string_pair required(it.first, it.second->classid);
+      ar << make_nvp("requires", required);
     }
   }
   template <typename Archive,
