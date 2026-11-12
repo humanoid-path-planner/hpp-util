@@ -8,14 +8,26 @@ requires = [
 ]
 
 [project]
+authors = [
+  { name = "Florent Lamiraux" },
+  { name = "Joseph Mirabel" }
+]
 dependencies = [
   "cmeel-boost ~= 1.90.0",
   "cmeel-tinyxml2"
 ]
 description = "Debugging tools for the HPP project."
 license = "BSD-2-Clause"
+maintainers = [
+  { email = "guilhem.saurel@laas.fr", name = "Guilhem Saurel" }
+]
 name = "hpp-util"
 version = "9.0.2"
+
+[project.urls]
+homepage = "https://github.com/humanoid-path-planner/hpp-util"
+issues = "https://github.com/humanoid-path-planner/hpp-util/issues"
+repository = "https://github.com/humanoid-path-planner/hpp-util"
 
 [tool.cmeel]
 has-sitelib = false
