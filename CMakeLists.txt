@@ -119,8 +119,11 @@ target_compile_definitions(
     PRIVATE -DHPP_LOGGINGDIR="${CMAKE_INSTALL_PREFIX}/var/log"
 )
 
-# Set shared library version.
-set_target_properties(${PROJECT_NAME} PROPERTIES SOVERSION ${PROJECT_VERSION})
+get_relative_rpath(lib ${PROJECT_NAME}_INSTALL_RPATH)
+set_target_properties(
+    ${PROJECT_NAME}
+    PROPERTIES INSTALL_RPATH "${${PROJECT_NAME}_INSTALL_RPATH}"
+)
 
 install(TARGETS ${PROJECT_NAME} EXPORT ${TARGETS_EXPORT_NAME} DESTINATION lib)
 
