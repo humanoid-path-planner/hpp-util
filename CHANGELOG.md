@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - [pyproject] Add authors, maintainers and project URLs
 - [CMake] Set the install RPATH of the library, for relocatable installs (pip wheels)
+- [CMake] Remove the SOVERSION of the library, the only one set in HPP
 
 ## [9.0.2] - 2026-07-24
 
